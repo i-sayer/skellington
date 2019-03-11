@@ -1,0 +1,115 @@
+
+@import url('https://fonts.googleapis.com/css?family=Domine:400,700|Montserrat:400,700');
+
+html {
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: Domine, sans-serif;
+    color: #555;
+    margin: 0;
+    background: linear-gradient(90deg, #cca, #fff, #cca);       
+}
+header {
+    text-align: right;
+    background: url(images/bg1.jpg) no-repeat center center;
+    background-size: cover;
+    min-height: 45vh;
+    margin-bottom: -5vh;
+}
+header>h1 {
+    font-family: Montserrat, sans-serif;
+    font-size: calc( 1.75em + 2.25vmin);
+    margin: 0;
+    color: white;
+    letter-spacing: 0.3vw;
+}
+header>h1>span:first-child {
+    color: #bb8b5b
+}
+p, ul, h4, h5 {
+    font-family: Montserrat, sans-serif;
+}
+header>h1>span {
+    display: inline-block;
+    padding:  8px 16px;
+    background:  rgba(0,0,0,0.7);
+}
+.wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    background-color: #f8f8f8;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    font-size: 1.2em;
+    background: linear-gradient(90deg,
+        transparent calc(50% - 2px),
+        currentColor calc(50% - 2px), currentColor calc(50% + 2px),
+        transparent calc(50% + 2px));
+    background-position-y: 48px;
+    background-repeat: no-repeat;
+    box-shadow: 0 5vh 0 white inset,0 -12px 0 white inset;
+}
+.col {
+    display: inline-block;
+    min-width: 50%;
+    max-width: 100%;
+    /* background-color: aqua; */
+    overflow: hidden;
+    width: calc((800px - 100%) * 800);
+    padding: 18px 48px 0;
+    line-height: 1.616;
+    background: linear-gradient(90deg, white calc(100% - 1px), transparent);
+}
+.col>img {
+    max-width: 100%;
+}
+.jazera {
+    list-style: none;
+    padding: 0;
+    margin-left: -1.616em;
+}
+.jazera>li {
+    white-space: nowrap;
+}
+.jazera>li::before{
+    content: attr(data-tag);
+    display: inline-block;
+    margin-right: 0.5em;
+    padding: 3px 6px;
+    min-width: 128px;
+    text-align: right;
+    color: white;
+    background-color: black;
+    font-weight: 700;
+    transform: translateX(-180px);
+    opacity: 0;
+    transition: .5s;
+    transition-property: opacity, transform;
+    transition-timing-function:
+        ease-in,
+        cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+}
+.jazera.goAnim>li::before {
+    transform: translateX(0);
+    opacity: 1;
+}
+.goAnim>li:nth-child(2)::before {
+    transition-delay: 0.05s;
+}
+.goAnim>li:nth-child(3)::before {
+    transition-delay: 0.1s;
+}
+.goAnim>li:nth-child(4)::before {
+    transition-delay: 0.15s;
+}
+.goAnim>li:nth-child(5)::before {
+    transition-delay: 0.2s;
+}

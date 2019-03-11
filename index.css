@@ -1,6 +1,4 @@
 
-@import url('https://fonts.googleapis.com/css?family=Domine:400,700|Montserrat:400,700');
-
 html {
     box-sizing: border-box;
 }
@@ -13,7 +11,7 @@ body {
     font-family: Domine, sans-serif;
     color: #555;
     margin: 0;
-    background: linear-gradient(90deg, #cca, #fff, #cca);       
+    background-color: #f0efe7;       
 }
 header {
     text-align: right;

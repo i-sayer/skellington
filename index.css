@@ -22,6 +22,12 @@ header {
     min-height: 45vh;
     margin-bottom: -5vh;
 }
+header::before {
+    content: "Photo by Sebastiano Piazzi on Unsplash";
+    position: absolute;
+    font-size: smaller;
+    left: 3px;
+}
 header>h1 {
     font-family: Montserrat, sans-serif;
     font-size: calc( 1.75em + 2.25vmin);

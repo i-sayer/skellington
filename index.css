@@ -70,7 +70,7 @@ header>h1>span {
     width: calc((800px - 100%) * 800);
     padding: 18px 48px 0;
     line-height: 1.616;
-    background: linear-gradient(90deg, white calc(100% - 1px), transparent);
+    background: linear-gradient(90deg, white calc(100% - 1.5px), transparent);
 }
 .col>img {
     max-width: 100%;

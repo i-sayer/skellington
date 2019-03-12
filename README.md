@@ -2,7 +2,7 @@
 template for web apps
 preview link https://i-sayer.github.io/skellington/index.html
 
-```
+```javascript
 options = {
     root: null,
     rootMargin: "0px",

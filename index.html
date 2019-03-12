@@ -40,10 +40,26 @@
             </ul>
         </div>
         <div class="col">
-            <img src="https://directory.auckland.ac.nz/people/imageraw/a-tjahjana/10975029/biggest" alt="">
-            <img src="https://directory.auckland.ac.nz/people/imageraw/t-asadullah/10286188/biggest" alt="">
-            <img src="https://directory.auckland.ac.nz/people/imageraw/i-wood/10297408/biggest" alt="">
-            <img src="https://directory.auckland.ac.nz/people/imageraw/i-sayer/10288932/biggest" alt="">
+            <pre style="font-size: 0.8em">
+options = {
+    root: null,
+    rootMargin: "0px",
+    threshhold: 1
+}
+anielement = document.querySelector(".animateWhenVisible");
+try {
+    observer = new IntersectionObserver(handleIntersect, options);
+    observer.observe(anielement);
+    function handleIntersect(entries, observer) {
+        entries.forEach(function(entry) {
+            var ptr = (entry.isIntersecting)?"add":"remove";
+            entry.target.classList[ptr]("goAnim");
+        });
+    }
+} catch (dontcare) {
+    anielement.classList.add("goAnim");
+}
+            </pre>
         </div>
     </div>
     <p></p>

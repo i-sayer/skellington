@@ -15,16 +15,19 @@ body {
 }
 header {
     text-align: right;
+    position: relative;
     background: url(images/bg1.jpg) no-repeat center center;
     background-size: cover;
     min-height: 45vh;
     margin-bottom: -5vh;
 }
 header::before {
-    content: "Photo by Sebastiano Piazzi on Unsplash";
+    content: url(images/logo2018.svg);
     position: absolute;
-    font-size: smaller;
     left: 3px;
+    bottom: 17px;
+    width: 180px;
+    z-index: 3;
 }
 header>h1 {
     font-family: Montserrat, sans-serif;

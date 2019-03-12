@@ -75,6 +75,9 @@ header>h1>span {
 .col>img {
     max-width: 100%;
 }
+.center {
+    text-align: center;
+}
 .jazera {
     list-style: none;
     padding: 0;

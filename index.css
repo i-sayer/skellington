@@ -112,18 +112,15 @@ header>h1>span {
     transform: translateX(0);
     opacity: 1;
 }
-.goAnim>li:nth-child(2)::before {
-    transition-delay: 0.05s;
-}
-.goAnim>li:nth-child(3)::before {
-    transition-delay: 0.1s;
-}
-.goAnim>li:nth-child(4)::before {
-    transition-delay: 0.15s;
-}
-.goAnim>li:nth-child(5)::before {
-    transition-delay: 0.2s;
-}
+.goAnim>li:nth-child(2)::before {transition-delay: 0.05s;}
+.goAnim>li:nth-child(3)::before {transition-delay: 0.10s;}
+.goAnim>li:nth-child(4)::before {transition-delay: 0.15s;}
+.goAnim>li:nth-child(5)::before {transition-delay: 0.20s;}
+.goAnim>li:nth-child(6)::before {transition-delay: 0.25s;}
+.goAnim>li:nth-child(7)::before {transition-delay: 0.30s;}
+.goAnim>li:nth-child(8)::before {transition-delay: 0.35s;}
+.goAnim>li:nth-child(9)::before {transition-delay: 0.40s;}
+
 svg.icon {
     width: 28px;
     height: 28px;

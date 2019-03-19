@@ -94,7 +94,7 @@ header>h1>span {
     content: attr(data-tag);
     display: inline-block;
     margin-right: 0.5em;
-    padding: 3px 6px;
+    padding: 5px 7px;
     min-width: 128px;
     text-align: right;
     color: white;
@@ -124,6 +124,7 @@ header>h1>span {
 svg.icon {
     width: 28px;
     height: 28px;
+    vertical-align: text-bottom;
 }
 svg.icon_big {
     width: 48px;

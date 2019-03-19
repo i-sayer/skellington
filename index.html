@@ -42,7 +42,8 @@
                     
                     Thanks so much for your time today – appreciated.
                     </p>
-        </div>
+                    <p>Before CSS, nearly all presentational attributes of HTML documents were contained within the HTML markup. All font colors, background styles, element alignments, borders and sizes had to be explicitly described, often repeatedly, within the HTML. CSS lets authors move much of that information to another file, the style sheet, resulting in considerably simpler HTML.</p>
+                </div>
     </div>
     <p></p>
     <div class="wrap">
@@ -61,26 +62,8 @@
             <div class="center"><img src="images/heyheymymy.jpg" alt=""></div>
         </div>
         <div class="col">
-            <pre style="font-size: 0.8em">
-options = {
-    root: null,
-    rootMargin: "0px",
-    threshhold: 1
-}
-anielement = document.querySelector(".animateWhenVisible");
-try {
-    observer = new IntersectionObserver(handleIntersect, options);
-    observer.observe(anielement);
-    function handleIntersect(entries, observer) {
-        entries.forEach(function(entry) {
-            var ptr = (entry.isIntersecting)?"add":"remove";
-            entry.target.classList[ptr]("goAnim");
-        });
-    }
-} catch (dontcare) {
-    anielement.classList.add("goAnim");
-}
-            </pre>
+            <p>For example, headings (h1 elements), sub-headings (h2), sub-sub-headings (h3), etc., are defined structurally using HTML. In print and on the screen, choice of font, size, color and emphasis for these elements is presentational.</p>
+            <p>Before CSS, document authors who wanted to assign such typographic characteristics to, say, all h2 headings had to repeat HTML presentational markup for each occurrence of that heading type. This made documents more complex, larger, and more error-prone and difficult to maintain. CSS allows the separation of presentation from structure. CSS can define color, font, text alignment, size, borders, spacing, layout and many other typographic characteristics, and can do so independently for on-screen and printed views. CSS also defines non-visual styles, such as reading speed and emphasis for aural text readers. The W3C has now deprecated the use of all presentational HTML markup.</p>
             <div class="center"><img src="images/ferns.jpg" alt=""></div>
         </div>
     </div>

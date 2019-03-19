@@ -64,7 +64,9 @@ header>h1>span {
     box-shadow: 0 5vh 0 white inset,0 -12px 0 white inset;
 }
 .col {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     min-width: 50%;
     max-width: 100%;
     /* background-color: aqua; */
@@ -85,7 +87,8 @@ header>h1>span {
 .jazera {
     list-style: none;
     padding: 0;
-    /* margin-left: -1.616em; */
+    display: inline-block;
+    text-align: left;
 }
 .jazera>li {
     white-space: nowrap;

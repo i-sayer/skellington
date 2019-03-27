@@ -28,9 +28,17 @@
     <header><h1><span>APPLICATION </span><span>TEMPLATE</span></h1><svg class="icon_big"><use xlink:href="#icon-menu"></use></svg></header>
     <div class="wrap">
         <div class="col">
-            <h2>Understanding Lumbar and Pelvic Girdle Pain</h2>
+            <h2>Understanding Pelvic Girdle Pain</h2>
             <p>An Evidence Based Course on Clinical Anatomy, Biomechanics and Effective Rehabilitation</p>
-            <h4>Central Library</h4>
+            <h4>Test for alternate (toggling) Radio Group</h4>
+            <p>Click <em>Set handler</em> to load custom code. This button simply enables the default behaviour to be observed before the code is loaded.</p>
+            <form id="Testform" style="position: relative">
+                <label><input name="test" type="radio" value="1">Tahe</label>
+                <label><input name="test" type="radio" value="2">Rua</label>
+                <label><input name="test" type="radio" value="3">Toru</label>
+                <label><input name="test" type="radio" value="4">Fa</label>
+                <button id="EnableAltRadio">Set handler</button>
+            </section>
         <div class="center"><img src="images/albert.jpg" alt="Young Albert"></div>
     </div>
         <div class="col"><h2>Column Two</h2>
@@ -89,6 +97,21 @@
         } catch (dontcare) {
             anielement.classList.add("goAnim");
         }
+        // test handler for radio button group that allows toggling off by clicking again
+        document.getElementById("EnableAltRadio").onclick = function(e){
+            e.preventDefault();
+            var groupButtons = Array.apply(null,document.querySelectorAll("input[name=\"test\""));
+            groupButtons.forEach(function(b){
+                b.checked = false;
+                b.onclick = function(e) {
+                    if (this.value == this.offsetParent[this.name].current_value){
+                        this.checked = false;
+                        this.offsetParent[this.name].current_value = undefined;
+                    } else
+                        this.offsetParent[this.name].current_value = this.value;
+                };
+            });
+        };
     </script>
 </body>
 </html>

@@ -23,6 +23,9 @@
             <symbol id="icon-menu" viewBox="0 0 128 128">
                 <path d="M 9.8242188,28.613281 A 5.2888577,5.2888577 0 1 0 9.8027344,39.185547 L 108.72656,39.369141 A 5.2888577,5.2888577 0 1 0 108.75,28.798828 Z m 0,30.03125 A 5.2888577,5.2888577 0 1 0 9.8027344,69.214844 L 108.72656,69.400391 A 5.2888577,5.2888577 0 1 0 108.75,58.828125 Z m 0,30.03125 A 5.2888577,5.2888577 0 1 0 9.8027344,99.246094 L 108.72656,99.429688 A 5.2888577,5.2888577 0 1 0 108.75,88.859375 Z"></path>
             </symbol>
+            <symbol id="th-bg-sort" viewBox="0 0 128 128">
+                    <path d="M 0,16L64,0L128,16L128,112L64,128L0,112 Z"></path>
+            </symbol>
             </defs>
         </svg>
     <header><h1><span>APPLICATION </span><span>TEMPLATE</span></h1><svg class="icon_big"><use xlink:href="#icon-menu"></use></svg></header>
@@ -75,6 +78,37 @@
             <p>For example, headings (h1 elements), sub-headings (h2), sub-sub-headings (h3), etc., are defined structurally using HTML. In print and on the screen, choice of font, size, color and emphasis for these elements is presentational.</p>
             <p>Before CSS, document authors who wanted to assign such typographic characteristics to, say, all h2 headings had to repeat HTML presentational markup for each occurrence of that heading type. This made documents more complex, larger, and more error-prone and difficult to maintain. CSS allows the separation of presentation from structure. CSS can define color, font, text alignment, size, borders, spacing, layout and many other typographic characteristics, and can do so independently for on-screen and printed views. CSS also defines non-visual styles, such as reading speed and emphasis for aural text readers. The W3C has now deprecated the use of all presentational HTML markup.</p>
             <div class="center"><img src="images/ferns.jpg" alt=""></div>
+        </div>
+    </div>
+    <style>
+        th.sortby {
+            background-image: url(images/th-sort-bg.svg);
+            background-size: cover;
+        }
+    </style>
+    <div class="wrap">
+        <div class="col">
+            <div class="center">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="sortby">Column One</th>
+                            <th>Column Two</th>
+                            <th>Column Three</th>
+                            <th>Column Four</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>aaaa</td><td>bbbb</td><td>cccc</td><td>dddd</td></tr>
+                        <tr><td>aaaa</td><td>bbbb</td><td>cccc</td><td>dddd</td></tr>
+                        <tr><td>aaaa</td><td>bbbb</td><td>cccc</td><td>dddd</td></tr>
+                        <tr><td>aaaa</td><td>bbbb</td><td>cccc</td><td>dddd</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col">
+            <h2>Other</h2>
         </div>
     </div>
     <p></p>

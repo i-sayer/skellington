@@ -88,6 +88,7 @@
     </style>
     <div class="wrap">
         <div class="col">
+            <h2><a target="_blank" href="kerry.html">CSS Grid with IE9 - 11 support</a></h2>
             <div class="center">
                 <table>
                     <thead>
@@ -109,7 +110,22 @@
         </div>
         <div class="col">
             <h2>Other</h2>
-        </div>
+            <div style="font-family:sans-serif">
+                <p>Hi {{firstName}},</p>
+                <p>As part of the Clinical Methods component of the MBCHB 321 course in Semester 2 you will spend 3 hours, one afternoon a week in ward-based teaching (either Tuesday, Wednesday or Thursday).</p>
+                <p>To avoid a timetabling clash, please do not select Thursdays as your 1st or 2nd preference if you are doing Medical Humanities in Semester 2.</p>
+                <p>We will do our best in allocating students, but we cannot guarantee that every preference will be accommodated.</p>
+                <p>Please note that once allocation is completed, students are NOT allowed to swap.</p>
+                <hr/>
+                <p>Click <a href="https://gpteach.auckland.ac.nz/y3/student-hospital-page.php">here</a> for the online form.
+                </p>
+                <p>Thank you,</p>
+                <p>&nbsp;</p>
+                <p>Kathryn Siow<br/>
+                Group Services Team Leader<br/>
+                <a href="mailto:k.siow@auckland.ac.nz">k.siow@auckland.ac.nz</a></p>
+                </div>
+            </div>
     </div>
     <p></p>
     <script>
@@ -146,6 +162,21 @@
                 };
             });
         };
+        // utilty to generate heoi
+        function makeHEOI(year){
+            var shed = {"1":{"1":43,"2":49,"3":43}, "2":{"2":45,"3":45}, "3":{"1":18,"2":18,"3":24}};
+            var rec = [];
+            var arec = function (h,d) {
+                for (var i=1; i<=shed[h][d]; i++)
+                    rec.push([h>>0,year,d>>0,i]);
+            };
+            Object.keys(shed).forEach(hospital=>Object.keys(shed[hospital]).forEach(day=>arec(hospital,day)));
+            square2round = function(x){return {"[":"(","]":")","'":"’"}[x]};
+            var res = JSON.stringify(rec);
+            res = res.replace(/[\[|\]]/g, square2round);
+            debugger;
+            // copy(res)
+        }
     </script>
 </body>
 </html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Grid4U</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font: 1em sans-serif;
+            margin: 12px;
+        }
+        .card>h3 {
+            margin: 0;
+            padding: 6px;
+            background-color: #0080a7;
+            color: whitesmoke;
+        }
+        .agrid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-rows: auto;
+            grid-gap: 12px;
+        }
+        .card {
+            min-height: 180px;
+            border: 1px solid;
+            box-shadow: 0px 6px 12px -4px rgba(0,0,0,0.6);
+        }
+    </style>
+</head>
+<body>
+    <section class="agrid">
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+        <div class="card">
+            <h3>card</h3>
+        </div>
+    </section>
+    <script nomodule src="ie-grid.js"></script>
+    </body>
+</html>

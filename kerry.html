@@ -31,6 +31,9 @@
             min-height: 180px;
             border: 1px solid;
             box-shadow: 0px 6px 12px -4px rgba(0,0,0,0.6);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center 2.1em;
         }
     </style>
 </head>
@@ -80,5 +83,15 @@
         </div>
     </section>
     <script nomodule src="ie-grid.js"></script>
+    <script>
+        var cards = document.querySelectorAll(".card");
+        var places = "Bali,Fiji,Tonga,Sydney,Phuket,Osaka,Bejing,Hobart,Chicago,Dalas,London,Paris,Rome,Moskow".split(",");
+        places.forEach(function(place,i){
+            if (cards[i]){
+                cards[i].firstElementChild.textContent = place;
+                cards[i].style.backgroundImage = "url(https://loremflickr.com/320/240/"+place+")";
+            }
+        });
+    </script>
     </body>
 </html>

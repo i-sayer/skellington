@@ -14,7 +14,7 @@
     var ss = document.styleSheets[0];
     //ss.insertRule(".agrid {display: flex; flex-wrap: wrap;}", 0);
     ss.insertRule(".agrid {display: block; }", 0);
-    //ss.insertRule(".card {margin: 6px}", 0);
+    //ss.insertRule(".card {margin: 6px; min-width: 320px}", 0);
     ss.insertRule(".card {display: inline-block; margin: 6px 4px}", 0);
     window.addEventListener("resize", calccardsize, false);
 })();

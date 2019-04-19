@@ -18,6 +18,7 @@
             padding: 6px;
             background-color: #0080a7;
             color: whitesmoke;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
         }
         .agrid {
             max-width: 1400px;
@@ -69,27 +70,15 @@
         <div class="card">
             <h3>card</h3>
         </div>
-        <div class="card">
-            <h3>card</h3>
-        </div>
-        <div class="card">
-            <h3>card</h3>
-        </div>
-        <div class="card">
-            <h3>card</h3>
-        </div>
-        <div class="card">
-            <h3>card</h3>
-        </div>
     </section>
     <script nomodule src="ie-grid.js"></script>
     <script>
         var cards = document.querySelectorAll(".card");
-        var places = "Bali,Fiji,Tonga,Sydney,Phuket,Osaka,Bejing,Hobart,Chicago,Dalas,London,Paris,Rome,Moskow".split(",");
+        var places = "sunrise1,sunrise2,sunrise3,muri,sky,motorway,ferns,bg1,wave,heyheymymy".split(",");
         places.forEach(function(place,i){
             if (cards[i]){
                 cards[i].firstElementChild.textContent = place;
-                cards[i].style.backgroundImage = "url(https://loremflickr.com/320/240/"+place+")";
+                cards[i].style.backgroundImage = "url(/images/"+place+".jpg";
             }
         });
     </script>

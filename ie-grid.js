@@ -5,7 +5,7 @@
             domrect = document.querySelector(".agrid").getBoundingClientRect(),
             windowwidth = domrect.width,
             cols = Math.floor(windowwidth/320),
-            extra = (windowwidth-(cols*320)-((cols)*14))/cols,
+            extra = (windowwidth-(cols*320)-((cols)*19))/cols,
             cardwidth = Math.floor(320+extra);
         cards = document.querySelectorAll(".agrid>.card");
         for (i=0; card = cards[i]; i++)

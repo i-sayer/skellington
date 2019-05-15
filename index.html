@@ -7,6 +7,10 @@
     <title>Application Title</title>
     <link href="https://fonts.googleapis.com/css?family=Domine:400,700|Montserrat:400,700" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="index.css">
+    <script type="text/javascript" src="//unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+
+    <!-- <script type="text/javascript" src="//unpkg.com/blob.js@1.0.1/Blob.js"></script>
+    <script type="text/javascript" src="//unpkg.com/file-saver@1.3.3/FileSaver.js"></script> -->
 </head>
 <body>
         <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -89,8 +93,11 @@
     <div class="wrap">
         <div class="col">
             <h2><a target="_blank" href="kerry.html">CSS Grid with IE9 - 11 support</a></h2>
+            <div><svg class="icon" onclick="testDownload()">
+                <use xlink:href="#icon-files-empty"></use>
+            </svg></div>
             <div class="center">
-                <table>
+                <table id="tableToExcel">
                     <thead>
                         <tr>
                             <th class="sortby">Column One</th>
@@ -104,6 +111,10 @@
                         <tr><td>aaaa</td><td>bbbb</td><td>cccc</td><td>dddd</td></tr>
                         <tr><td>aaaa</td><td>bbbb</td><td>cccc</td><td>dddd</td></tr>
                         <tr><td>aaaa</td><td>bbbb</td><td>cccc</td><td>dddd</td></tr>
+                        <tr><td>Anvil</td><td>Bovril</td><td>Catalan</td><td>Cloud</td></tr>
+                        <tr><td>Anvil</td><td>Bovril</td><td>Catalan</td><td>Cloud</td></tr>
+                        <tr><td>Anvil</td><td>Bovril</td><td>Catalan</td><td>Cloud</td></tr>
+                        <tr><td>Anvil</td><td>Bovril</td><td>Catalan</td><td>Cloud</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -146,6 +157,12 @@
             }
         } catch (dontcare) {
             anielement.classList.add("goAnim");
+        }
+        // test excel fownload of table
+        function testDownload(){
+            var elt = document.getElementById('tableToExcel');
+            var wb = XLSX.utils.table_to_book(elt, {sheet:"Sheet JS"});
+            return XLSX.writeFile(wb, 'test.xlsx');
         }
         // test handler for radio button group that allows toggling off by clicking again
         document.getElementById("EnableAltRadio").onclick = function(e){

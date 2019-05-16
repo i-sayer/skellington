@@ -161,7 +161,8 @@
         // test excel fownload of table
         function testDownload(){
             var elt = document.getElementById('tableToExcel');
-            var wb = XLSX.utils.table_to_book(elt, {sheet:"Sheet JS"});
+            var wb = XLSX.utils.table_to_book(elt, {sheet:"Export"});
+            wb.Sheets["Export"]["!cols"] = [{"width": 8},{"width": 16},{"width": 4}];
             return XLSX.writeFile(wb, 'test.xlsx');
         }
         // test handler for radio button group that allows toggling off by clicking again

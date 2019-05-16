@@ -100,10 +100,10 @@
                 <table id="tableToExcel">
                     <thead>
                         <tr>
-                            <th class="sortby">Column One</th>
-                            <th>Column Two</th>
-                            <th>Column Three</th>
-                            <th>Column Four</th>
+                            <th class="sortby">One</th>
+                            <th>Two</th>
+                            <th>Three</th>
+                            <th>Four</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -111,7 +111,7 @@
                         <tr><td>aaaa</td><td>bbbb</td><td>cccc</td><td>dddd</td></tr>
                         <tr><td>aaaa</td><td>bbbb</td><td>cccc</td><td>dddd</td></tr>
                         <tr><td>aaaa</td><td>bbbb</td><td>cccc</td><td>dddd</td></tr>
-                        <tr><td>Anvil</td><td>Bovril</td><td>Catalan</td><td>Cloud</td></tr>
+                        <tr><td>Lathe of heaven</td><td>Bovril</td><td>Catalan</td><td>Cloud</td></tr>
                         <tr><td>Anvil</td><td>Bovril</td><td>Catalan</td><td>Cloud</td></tr>
                         <tr><td>Anvil</td><td>Bovril</td><td>Catalan</td><td>Cloud</td></tr>
                         <tr><td>Anvil</td><td>Bovril</td><td>Catalan</td><td>Cloud</td></tr>
@@ -162,8 +162,10 @@
         function testDownload(){
             var elt = document.getElementById('tableToExcel');
             var wb = XLSX.utils.table_to_book(elt, {sheet:"Export"});
-            wb.Sheets["Export"]["!cols"] = [{"width": 8},{"width": 16},{"width": 4}];
-            return XLSX.writeFile(wb, 'test.xlsx');
+            var wid = [];
+            Array.apply(null,elt.rows[0].cells).forEach(function(c){wid.push({"width":c.offsetWidth/10})});
+            wb.Sheets["Export"]["!cols"] = wid;
+            return XLSX.writeFile(wb, 'xxxx.xlsx');
         }
         // test handler for radio button group that allows toggling off by clicking again
         document.getElementById("EnableAltRadio").onclick = function(e){

@@ -1,6 +1,10 @@
-var _playlist = [{
-"href": "https://iansayer.blogs.auckland.ac.nz/files/2016/12/7days-2ceomut.mp3",
-"name": "7days"},{
+var _playlist = [
+    {
+        "href": "3080.mp3",
+        "name": "test"},{
+            "href": "https://iansayer.blogs.auckland.ac.nz/files/2016/12/7days-2ceomut.mp3",
+            "name": "7days"},
+{
 "href": "https://iansayer.blogs.auckland.ac.nz/files/2016/12/AllTheBrave-1dzqwfb.mp3",
 "name": "AllTheBrave"},{
 "href": "https://iansayer.blogs.auckland.ac.nz/files/2016/12/AmbientLite-13o9wsn.mp3",

@@ -89,8 +89,45 @@
     <script type="module">
         function clicklink(e){
             e.preventDefault();
+            if (!audioCtx) {
+                initwebaudio();
+                var mesource = audioCtx.createMediaElementSource(audio);
+                mesource.connect(analyser);
+                analyser.connect(audioCtx.destination);
+                draw();
+            }
             audioSource.src = this.href;
             player.play();
+        }
+        var audioCtx, analyser, audio, dataArray, bands = [];
+        function initwebaudio(){
+            let fftsize = 2048, samplerate, startfreqhz = 16;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioCtx.createAnalyser();
+            analyser.fftSize = fftsize;
+            audio = document.getElementById("player");
+            var bufferLength = analyser.frequencyBinCount;
+            dataArray = new Uint8Array(bufferLength);
+            const cuberootof2 = Math.pow(2,(1/3));
+            samplerate = audioCtx.sampleRate;
+
+            // the frequency of each band, bk==1st bucket for band, wd==number of buckets to average
+            bands = [];
+            var i, j, bandindex = 0, bandgap = samplerate/fftsize;
+            for (i=0; i<barcnt; i++){
+                bands.push({fr:Math.ceil(startfreqhz),bk:0,wd:1});
+                startfreqhz *= cuberootof2;
+            }
+            j = 0;
+            for (i=0; i<barcnt; i++){
+                for (;j<bufferLength; j++){
+                    if (i>0)
+                        bands[i-1].wd++;
+                    if ((j*bandgap)>bands[i].fr)
+                        break;
+                }
+                bands[i].bk = j;
+            }
         }
         _playlist.forEach(u=>{
             let link = document.createElement("a");
@@ -113,35 +150,6 @@
             barwid = spectrumDisplay.offsetWidth/barcnt;
         for (i=0; i<barcnt; i++)
             ctx.fillRect(i*barwid,0,barwid,i*(barwid/2));
-        // get audio context and fill settings for each bar
-        var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        var analyser = audioCtx.createAnalyser();
-        var audio = document.getElementById("player");
-        var bufferLength = analyser.frequencyBinCount;
-        var dataArray = new Uint8Array(bufferLength);
-        var wArray = new Uint8Array(bufferLength);
-        let fftsize = 2048, samplerate, startfreqhz = 16;
-        const cuberootof2 = Math.pow(2,(1/3));
-        analyser.fftSize = fftsize;
-        samplerate = audioCtx.sampleRate;
-
-        // the frequency of each band, bk==1st bucket for band, wd==number of buckets to average
-        var bands = [];
-        var bandindex = 0, bandgap = samplerate/fftsize;
-        for (i=0; i<barcnt; i++){
-            bands.push({fr:Math.ceil(startfreqhz),bk:0,wd:1});
-            startfreqhz *= cuberootof2;
-        }
-        j = 0;
-        for (i=0; i<barcnt; i++){
-            for (;j<bufferLength; j++){
-                if (i>0)
-                    bands[i-1].wd++;
-                if ((j*bandgap)>bands[i].fr)
-                    break;
-            }
-            bands[i].bk = j;
-        }
 
         function draw() {
             requestAnimationFrame(draw);
@@ -156,14 +164,6 @@
                 avr = (avr / x.wd)>>3;
                 ctx.fillRect(i*barwid,0,barwid,(32-avr)*(barwid/2));
             });
-        }
-        audio.addEventListener('canplay', canplaynow, false);
-
-        function canplaynow () {
-            var source = audioCtx.createMediaElementSource(audio);
-            source.connect(analyser);
-            analyser.connect(audioCtx.destination);
-            draw();
         }
 
     </script>

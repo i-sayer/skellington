@@ -1,13 +1,13 @@
 var _playlist = [
     {
-        "href": "3080.mp3",
-        "name": "test"},{
+        "href": "/mp3/3080.mp3",
+        "name": "3080"},{
             "href": "https://iansayer.blogs.auckland.ac.nz/files/2016/12/7days-2ceomut.mp3",
             "name": "7days"},
 {
-"href": "https://iansayer.blogs.auckland.ac.nz/files/2016/12/AllTheBrave-1dzqwfb.mp3",
+"href": "/mp3/AllTheBrave-1dzqwfb.mp3",
 "name": "AllTheBrave"},{
-"href": "https://iansayer.blogs.auckland.ac.nz/files/2016/12/AmbientLite-13o9wsn.mp3",
+"href": "/mp3/AmbientLite-13o9wsn.mp3",
 "name": "AmbientLite"},{
 "href": "https://iansayer.blogs.auckland.ac.nz/files/2016/12/Australis-274ktmw.mp3",
 "name": "Australis"},{
@@ -33,11 +33,11 @@ var _playlist = [
 "name": "Flat Universe"},{
 "href": "https://iansayer.blogs.auckland.ac.nz/files/2017/03/Fracture-18qqt69.mp3",
 "name": "Fracture"},{
-"href": "https://iansayer.blogs.auckland.ac.nz/files/2017/03/FromAge-1diev97.mp3",
+"href": "/mp3/FromAge-1diev97.mp3",
 "name": "FromAge"},{
 "href": "https://iansayer.blogs.auckland.ac.nz/files/2017/03/HelveticaRoad-xi0ocr.mp3",
 "name": "Helvetica Road"},{
-"href": "https://iansayer.blogs.auckland.ac.nz/files/2017/03/Jemaca140-17lg0bx.mp3",
+"href": "/mp3/Jemaca140-17lg0bx.mp3",
 "name": "Jemaca140"},{
 "href": "https://iansayer.blogs.auckland.ac.nz/files/2017/03/NeonDawn-v5jlrl.mp3",
 "name": "NeonDawn"},{
@@ -63,7 +63,7 @@ var _playlist = [
 "name": "Normal"},{
 "href": "https://iansayer.blogs.auckland.ac.nz/files/2017/03/OutsideSquares-1zfqtl8.mp3",
 "name": "OutsideSquares"},{
-"href": "https://iansayer.blogs.auckland.ac.nz/files/2017/03/PinkGun-19mtgpc.mp3",
+"href": "/mp3/PinkGun-19mtgpc.mp3",
 "name": "PinkGun"},{
 "href": "https://iansayer.blogs.auckland.ac.nz/files/2017/03/PyramidScheming-199eeku.mp3",
 "name": "PyramidScheming"},{

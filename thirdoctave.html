@@ -100,7 +100,7 @@
         }
         var audioCtx, analyser, audio, dataArray, bands = [];
         function initwebaudio(){
-            let fftsize = 2048, samplerate, startfreqhz = 16;
+            let fftsize = 8192, samplerate, startfreqhz = 16;
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             analyser = audioCtx.createAnalyser();
             analyser.fftSize = fftsize;
@@ -129,12 +129,14 @@
             }
         }
         _playlist.forEach(u=>{
-            let link = document.createElement("a");
-            link.textContent = u.name;
-            link.href = u.href;
-            tracks.appendChild(link);
-            link.setAttribute("crossorigin", "use-credentials");
-            link.onclick = clicklink;
+            if (u.href[0]=="/"){ // ignore any non local till cors fixed
+                let link = document.createElement("a");
+                link.textContent = u.name;
+                link.href = u.href;
+                tracks.appendChild(link);
+                link.setAttribute("crossorigin", "use-credentials");
+                link.onclick = clicklink;
+            }
         });
         const sdc = document.getElementById("spectrumDisplay");
         const ctx=sdc.getContext("2d");

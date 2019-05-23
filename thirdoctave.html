@@ -73,6 +73,9 @@
             letter-spacing: 2px;
             text-align: center;
             text-decoration: none;
+            border: 1.5px solid rgba(255, 127, 0, 0.5);
+            border-radius: 16px;
+            padding: 6px 0;
         }
     </style>
 </head>
@@ -131,15 +134,13 @@
                 bands[i].bk = j;
             }
         }
-        _playlist.forEach(u=>{
-            if (u.href[3]=="/"){ // ignore any non local till cors fixed
-                let link = document.createElement("a");
-                link.textContent = u.name;
-                link.href = u.href;
-                tracks.appendChild(link);
-                link.setAttribute("crossorigin", "use-credentials");
-                link.onclick = clicklink;
-            }
+        files.forEach(u=>{
+            let link = document.createElement("a");
+            link.textContent = u.slice(0, -4);
+            link.href = "mp3/"+u;
+            tracks.appendChild(link);
+            //link.setAttribute("crossorigin", "use-credentials");
+            link.onclick = clicklink;
         });
         const sdc = document.getElementById("spectrumDisplay");
         const ctx=sdc.getContext("2d");

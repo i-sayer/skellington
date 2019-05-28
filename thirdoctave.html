@@ -7,9 +7,9 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --barwidth: 10;
+            --barwidth: 17;
             --barcount: 30;
-            --barspace: 4;
+            --barspace: 3;
             --bartot: (var(--barwidth)+var(--barspace));
         }
         html, body {
@@ -36,7 +36,7 @@
             width: calc( var(--barcount) * (var(--barwidth) + var(--barspace)) * 1px);
             height: calc( var(--barcount) * (var(--barwidth) + var(--barspace)) * 0.5px);
             margin: auto;
-            filter: blur(calc(var(--barspace)*0.2px));
+            /* filter: blur(1.125px); */
             box-shadow: 0 2px 4px -2px black;
             background:
                 linear-gradient(
@@ -60,7 +60,7 @@
               auto;
             background-position-x: calc(var(--barspace) * -0.5px), 0, 0;
             background-position-y: 0, calc(var(--barspace) * -0.5px), 0;
-            -webkit-box-reflect: below 8px linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0.35));
+            -webkit-box-reflect: below 8px linear-gradient(rgba(0,0,0,0),rgba(0,0,0,0.005),rgba(0,0,0,0.125));
             margin-bottom: 60px;
         }
         #tracks {
@@ -99,6 +99,16 @@
     </section>
     <script src="playlist.js"></script>
     <script type="module">
+        function playNext(e){
+            let justplayed = document.querySelector("#tracks>a:focus");
+            if (!justplayed)
+                return;
+            let next = justplayed.nextElementSibling;
+            if (!next)
+                return;
+            next.click();
+            next.focus();
+        }
         function clicklink(e){
             e.preventDefault();
             if (!audioCtx) {
@@ -106,6 +116,8 @@
                 var mesource = audioCtx.createMediaElementSource(audio);
                 mesource.connect(analyser);
                 analyser.connect(audioCtx.destination);
+                audioCtx.onended = function(e){alert('yo')};
+                player.addEventListener("ended", playNext, false);
                 draw();
             }
             player.src = this.href;
@@ -113,7 +125,7 @@
         }
         var audioCtx, analyser, audio, dataArray, bands = [];
         function initwebaudio(){
-            let fftsize = 8192, samplerate, startfreqhz = 16;
+            let fftsize = 4096, samplerate, startfreqhz = 16;
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             analyser = audioCtx.createAnalyser();
             analyser.fftSize = fftsize;
@@ -127,20 +139,11 @@
             bands = [];
             var i, j, bandindex = 0, bandgap = samplerate/fftsize;
             for (i=0; i<barcnt; i++){
-                bands.push({fr:Math.ceil(startfreqhz),bk:0,wd:1});
+                bands.push({fr:Math.ceil(startfreqhz),bk:Math.floor(startfreqhz/bandgap)+2,wd:1});
                 startfreqhz *= cuberootof2;
+                if (i>0)
+                    bands[i].wd = Math.ceil((bands[i].fr-bands[i-1].fr)*2.5/bandgap);
             }
-            j = 0;
-            for (i=0; i<barcnt; i++){
-                for (;j<bufferLength; j++){
-                    if (i>0)
-                        bands[i-1].wd++;
-                    if ((j*bandgap)>bands[i].fr)
-                        break;
-                }
-                bands[i].bk = j;
-            }
-            bands[i-1].wd = bufferLength-j;// set width of last band
         }
         files.forEach(u=>{
             let link = document.createElement("a");

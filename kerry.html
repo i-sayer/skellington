@@ -36,6 +36,15 @@
             background-size: cover;
             background-position: center 2.1em;
         }
+        .fullscreen {
+            position: absolute;
+            left: 20vw;
+            right: 20vw;
+            top: 20vh;
+            bottom: 20vh;
+            background-size: contain;
+            background-color: rgba(255,255,255,0.925);
+        }
     </style>
 </head>
 <body>
@@ -79,6 +88,7 @@
             if (cards[i]){
                 cards[i].firstElementChild.textContent = place;
                 cards[i].setAttribute("style","background-image: url(images/"+place+".jpg");
+                cards[i].onclick = function (e){this.classList.toggle("fullscreen")};
             }
         });
     </script>

@@ -6,7 +6,7 @@
     <title>CLock</title>
     <style>
         :root {
-            --shl: 8%;
+            --shl: 5%;
             --mhl: 12%;
             --hhl: 21%;
         }
@@ -44,7 +44,7 @@
             border: 1px solid #777;
             left: calc(50% - 2vmin);
             top: calc(50% - 2vmin);
-
+            box-shadow: 2px 4px 11px -3px rgba(0,0,0,0.5);
         }
         #hourhand,#minutehand,#secondhand {
             position: absolute;
@@ -65,7 +65,7 @@
             width: 0.5vmin;
         }
         #secondhand {
-            background: linear-gradient(transparent var(--shl), gray var(--shl),red 50%, transparent 50%);
+            background: linear-gradient(transparent var(--shl), rgba(255,0,0,0.2) var(--shl),red 50%, transparent 50%);
             width: 0.25vmin;
             min-width: 1px;
         }

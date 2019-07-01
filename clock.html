@@ -12,26 +12,24 @@
         }
         html, body {
             height: 100vh;
+            overflow-y: hidden;
         }
         body {
             display: flex;
-            background-color: darkolivegreen;
-            overflow: hidden;
-        }
+            background-color: #DFDBE5;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");        }
         .face {
             width: 80vmin;
             height: 80vmin;
             margin: auto;
-            background-image: url(clock2.svg)/*, radial-gradient(circle, #eee 69.7%, transparent 72%)*/;
-            background-color: rgba(255,255,255,0.5);
+            background-image: url(clock3.svg);
             background-size: cover;
             background-repeat: no-repeat;
-            /* background-position-y: -10px,0; */
+            background-color: aliceblue;
             position: relative;
-            opacity: 0.5;
-            border: 2px solid;
-            border-radius: 26%;
-            box-shadow: 0 4px 15px -3px black;
+            border: 2px solid gray;
+            border-radius: 50%;
+            box-shadow: 12px 19px 25px -2px rgba(0,0,0,0.5);
         }
         .face::after {
             content:"";
@@ -56,15 +54,16 @@
         }
         #hourhand {
             background: linear-gradient(transparent var(--hhl), black var(--hhl),black 50%, transparent 50%);
-            width: 12px;
+            width: 1vmin;
         }
         #minutehand {
             background: linear-gradient(transparent var(--mhl), black var(--mhl),black 50%, transparent 50%);
-            width: 8px;
+            width: 0.5vmin;
         }
         #secondhand {
             background: linear-gradient(transparent var(--shl), gray var(--shl),red 50%, transparent 50%);
-            width: 4px;
+            width: 0.25vmin;
+            min-width: 1px;
         }
 
     </style>
@@ -81,16 +80,16 @@
             let h=dt.getHours(), m=dt.getMinutes(), s=dt.getSeconds();
             let par = hourhand.parentElement;
             let hands = [
-                {u:hourhand, a:(h+m*(1/60))*30, w:12},
-                {u:minutehand, a:(m+s*(1/60))*6, w:8, },
-                {u:secondhand, a:s*6, w:4}
+                {u:hourhand, a:(h+m*(1/60))*30, w:1},
+                {u:minutehand, a:(m+s*(1/60))*6, w:0.5 },
+                {u:secondhand, a:s*6, w:0.25}
             ];
             let half = Math.floor(par.offsetWidth/2);
             
             hands.forEach(u=>{
                 u.u.style.opacity = 1;
                 u.u.style.transitionProperty = (s==0)?"none":"transform, opacity";
-                u.u.style.transform = `translateX(${half-u.w}px) rotate(${u.a}deg)`;
+                u.u.style.transform = `translateX( calc(${half}px - ${u.w/2}vmax)) rotate(${u.a}deg)`;
             });
             
         }, 1000);

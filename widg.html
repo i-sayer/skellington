@@ -38,11 +38,15 @@
         .widg::before {
             content:"";
             position: absolute;
-            background-color: transparent;
+            background-color: rgba(0,0,50,0);
             left: 0; right: 0;
             top: 0; bottom: 0;
             clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, calc(100% - 5px) 0%, calc(100% - 5px) calc(100% - 5px), 5px calc(100% - 5px), 5px 0%);
             cursor: crosshair;
+            transition: background-color 0.3s ease-in;
+        }
+        .widg:hover::before {
+            background-color: rgba(0,0,50,0.16);
         }
         .widg>h3{
             margin: 1px;

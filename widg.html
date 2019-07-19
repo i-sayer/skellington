@@ -19,6 +19,7 @@
             -moz-background-clip: text;
             background-clip: text;
             position: fixed;
+            margin-top: 0;
         }
         .widg {
             position: relative;
@@ -42,7 +43,7 @@
             left: 0; right: 0;
             top: 0; bottom: 0;
             clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, calc(100% - 5px) 0%, calc(100% - 5px) calc(100% - 5px), 5px calc(100% - 5px), 5px 0%);
-            /* cursor: crosshair; */
+            cursor: all-scroll;
             transition: background-color 0.3s ease-in;
         }
         .widg:hover::before {
@@ -52,6 +53,7 @@
             margin: 1px;
             padding: 3px;
             background: linear-gradient(rgb(255, 255, 255), rgb(204, 204, 204));
+            cursor: grab;
         }
         .widg>p {
             padding: 5px;
@@ -65,16 +67,11 @@
         <p><label for="">Input Name:<input id="ttp" type="text"></label></p>
     </div>
     <script>
-        test1.addEventListener("mousedown",_w_mousedownover);
-        test1.addEventListener("mouseover",_w_mousedownover);
-        test1.addEventListener("mouseout",function(e){
-            if (!window.adjustWidg)
-                document.body.style.cursor = "unset";
-        });
+        test1.addEventListener("mousedown",_w_mousedown);
         function $top(e) {
             // adjust top edge
-            if (e.type=="mouseover")
-                return document.body.style.cursor = "ns-resize";
+            if (e.clientY<48)
+                return;
             var ow = window.adjustWidg;
             var delta = e.clientY - ow.startY;
             if (delta) {
@@ -85,16 +82,14 @@
         }
         function $topRight(e) {
             // adjust top-right corner
-            if (e.type=="mouseover")
-                return document.body.style.cursor = "nesw-resize";
             $top(e);
             $right(e);
         }
         function $right(e) {
             // adjust right edge
-            if (e.type=="mouseover")
-                return document.body.style.cursor = "ew-resize";
             var ow = window.adjustWidg;
+            if (e.clientX>window.visualViewport.width-8)
+                return;
             var delta = e.clientX - ow.startX;
             if (delta)
                 ow.style.width = (ow.offsetWidth + delta) + "px";
@@ -102,15 +97,13 @@
         }
         function $bottomRight(e) {
             // adjust bottom-right corner
-            if (e.type=="mouseover")
-                return document.body.style.cursor = "nwse-resize";
             $bottom(e);
             $right(e);
         }
         function $bottom(e) {
             // adjust bottom edge
-            if (e.type=="mouseover")
-                return document.body.style.cursor = "ns-resize";
+            if (e.clientY>window.visualViewport.height-8)
+                return;
             var ow = window.adjustWidg;
             var delta = e.clientY - ow.startY;
             if (delta)
@@ -119,54 +112,48 @@
         }
         function $bottomLeft(e) {
             // adjust bottom-left corner
-            if (e.type=="mouseover")
-                return document.body.style.cursor = "nesw-resize";
             $bottom(e);
             $left(e);
         }
         function $left(e) {
             // adjust left edge
-            if (e.type=="mouseover")
-                return document.body.style.cursor = "ew-resize";
+            if (e.clientX<2)
+                return;
             var ow = window.adjustWidg;
             var delta = e.clientX - ow.startX;
             if (delta) {
-                ow.style.width = (ow.offsetWidth - delta) + "px";
                 ow.style.left = (e.clientX) + "px";
+                ow.style.width = (ow.offsetWidth - delta) + "px";
             }
             ow.startX = e.clientX;
         }
         function $topLeft(e) {
             // adjust top-left corner
-            if (e.type=="mouseover")
-                return document.body.style.cursor = "nwse-resize";
             $top(e);
             $left(e);
         }
-        function _w_mousedownover(e){
+        function _w_mousedown(e){
             let rect = this.getBoundingClientRect();
+            let gm = 12; // GrabMargin
             // need to detect 1 of 7 zones: top-left, left, bottom-left, bottom, bottom-right, right, top-right
-            let bin = [(e.clientY < rect.top + 10),(e.clientX > rect.right - 6),(e.clientY > rect.bottom - 10),(e.clientX < rect.left + 6)]
-                .reduce((a,u,i)=>a+((u)?Math.pow(2, i):0));
+            let bin = [
+                (e.clientY < rect.top + gm),
+                (e.clientX > rect.right - gm),
+                (e.clientY > rect.bottom - gm),
+                (e.clientX < rect.left + gm)
+                ].reduce((a,u,i)=>a+((u)?Math.pow(2, i):0));
             let f = {1:$top, 3:$topRight, 2:$right, 6:$bottomRight, 4:$bottom, 12:$bottomLeft, 8:$left, 9:$topLeft}[bin];
             if (f) {
-                if (e.type=="mouseover")
-                    f(e);
-                else {
-                    this.startX = e.clientX;
-                    this.startY = e.clientY;
-                    window.adjustWidg = this;
-                    window.addEventListener("mousemove", f);
-                    var $done = function(ev){
-                        window.removeEventListener("mousemove", f);
-                        window.removeEventListener("mouseup", $done);
-                        window.adjustWidg = undefined;
-                    }
-                    window.addEventListener("mouseup", $done);
+                this.startX = e.clientX;
+                this.startY = e.clientY;
+                window.adjustWidg = this;
+                window.addEventListener("mousemove", f);
+                var $done = function(ev){
+                    window.removeEventListener("mousemove", f);
+                    window.removeEventListener("mouseup", $done);
+                    window.adjustWidg = undefined;
                 }
-            } else {
-                if (!window.adjustWidg)
-                    document.body.style.cursor = "unset";
+                window.addEventListener("mouseup", $done);
             }
         }
     </script>

@@ -42,7 +42,7 @@
             left: 0; right: 0;
             top: 0; bottom: 0;
             clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, calc(100% - 5px) 0%, calc(100% - 5px) calc(100% - 5px), 5px calc(100% - 5px), 5px 0%);
-            cursor: crosshair;
+            /* cursor: crosshair; */
             transition: background-color 0.3s ease-in;
         }
         .widg:hover::before {
@@ -65,9 +65,16 @@
         <p><label for="">Input Name:<input id="ttp" type="text"></label></p>
     </div>
     <script>
-        test1.addEventListener("mousedown",_w_mousedown);
+        test1.addEventListener("mousedown",_w_mousedownover);
+        test1.addEventListener("mouseover",_w_mousedownover);
+        test1.addEventListener("mouseout",function(e){
+            if (!window.adjustWidg)
+                document.body.style.cursor = "unset";
+        });
         function $top(e) {
             // adjust top edge
+            if (e.type=="mouseover")
+                return document.body.style.cursor = "ns-resize";
             var ow = window.adjustWidg;
             var delta = e.clientY - ow.startY;
             if (delta) {
@@ -78,11 +85,15 @@
         }
         function $topRight(e) {
             // adjust top-right corner
+            if (e.type=="mouseover")
+                return document.body.style.cursor = "nesw-resize";
             $top(e);
             $right(e);
         }
         function $right(e) {
             // adjust right edge
+            if (e.type=="mouseover")
+                return document.body.style.cursor = "ew-resize";
             var ow = window.adjustWidg;
             var delta = e.clientX - ow.startX;
             if (delta)
@@ -91,11 +102,15 @@
         }
         function $bottomRight(e) {
             // adjust bottom-right corner
+            if (e.type=="mouseover")
+                return document.body.style.cursor = "nwse-resize";
             $bottom(e);
             $right(e);
         }
         function $bottom(e) {
             // adjust bottom edge
+            if (e.type=="mouseover")
+                return document.body.style.cursor = "ns-resize";
             var ow = window.adjustWidg;
             var delta = e.clientY - ow.startY;
             if (delta)
@@ -104,11 +119,15 @@
         }
         function $bottomLeft(e) {
             // adjust bottom-left corner
+            if (e.type=="mouseover")
+                return document.body.style.cursor = "nesw-resize";
             $bottom(e);
             $left(e);
         }
         function $left(e) {
             // adjust left edge
+            if (e.type=="mouseover")
+                return document.body.style.cursor = "ew-resize";
             var ow = window.adjustWidg;
             var delta = e.clientX - ow.startX;
             if (delta) {
@@ -119,25 +138,35 @@
         }
         function $topLeft(e) {
             // adjust top-left corner
+            if (e.type=="mouseover")
+                return document.body.style.cursor = "nwse-resize";
             $top(e);
             $left(e);
         }
-        function _w_mousedown(e){
+        function _w_mousedownover(e){
             let rect = this.getBoundingClientRect();
             // need to detect 1 of 7 zones: top-left, left, bottom-left, bottom, bottom-right, right, top-right
             let bin = [(e.clientY < rect.top + 10),(e.clientX > rect.right - 6),(e.clientY > rect.bottom - 10),(e.clientX < rect.left + 6)]
                 .reduce((a,u,i)=>a+((u)?Math.pow(2, i):0));
             let f = {1:$top, 3:$topRight, 2:$right, 6:$bottomRight, 4:$bottom, 12:$bottomLeft, 8:$left, 9:$topLeft}[bin];
-            if (f){
-                this.startX = e.clientX;
-                this.startY = e.clientY;
-                window.adjustWidg = this;
-                window.addEventListener("mousemove", f);
-                var $done = function(ev){
-                    window.removeEventListener("mousemove", f);
-                    window.removeEventListener("mouseup", $done);
+            if (f) {
+                if (e.type=="mouseover")
+                    f(e);
+                else {
+                    this.startX = e.clientX;
+                    this.startY = e.clientY;
+                    window.adjustWidg = this;
+                    window.addEventListener("mousemove", f);
+                    var $done = function(ev){
+                        window.removeEventListener("mousemove", f);
+                        window.removeEventListener("mouseup", $done);
+                        window.adjustWidg = undefined;
+                    }
+                    window.addEventListener("mouseup", $done);
                 }
-                window.addEventListener("mouseup", $done);
+            } else {
+                if (!window.adjustWidg)
+                    document.body.style.cursor = "unset";
             }
         }
     </script>

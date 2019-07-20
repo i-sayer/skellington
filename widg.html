@@ -10,6 +10,8 @@
             font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
             background-color: #e6dcd6;
             background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAXCAMAAABDEo1gAAAALVBMVEXu7u7z8/Pt7e3r6+vv7+/x8fHs7Ozw8PDo6Ojq6urp6eny8vL09PT19fX29vbJGhcbAAAB5klEQVR42k2TW4IkIQgEUUQLofb+x91At2b2x1eFaZJ0i7TWdTQTnastfaa1ob4lQraPlmtvy5z7nGvR7h5vyjMDfjOKF+2lYk1UlnjRiAh0X12SeTR4Lx2D1s48Z9Rjl0ZEZGvL0HloWZyin4mTzOz76Y31R6dwN7LJ3tCd8/LTGV0zl47pnScv3eBiYIa3cdt1+uWn1TGu6wH4S8cIobBaYrtT97r8o+htaj843KFld+EuG0ZE4+WrkufNba6Tr/3QruKH58VAxzImfHIX6qsD+gQrNmRCVlbF06kw+JapeyT0l0m1i+aEmBZvgoB115PPCPO5PnpDR4vpqyXVoZxv872K1Bq1/5eQznKyiu/GDE+SBR5+ROj+6BxYq0b5oKxnivIBAYdekHL8yEc3eXh6eVeOTR9BNdCHZpTMUB/RLo1lmy4LO2UdXvQE3W/Yau/bH/noMZHsvjUqqt7SxHBkR06XyVzMv5ncpPRkiusgGSt9FntmmjrcR1PShDdc0BLD2BLWuBhR1zPHvyKKdjKx0+PjIA1XgrJd/1OF/taCYqHJ7g3Xo6fQqh3cWbHHwukv9LPaCy2sjxnUjjaD+DPy8OvyydcK4v4Gi65uNuiZf5rgINhdfb9/DLF+aS/6sXjtRiB/AetLF9OdGDz6AAAAAElFTkSuQmCC);
+            margin: 0;
+            height: 100vh;
         }
         h1 {
             background-color: #565656;
@@ -42,7 +44,8 @@
             background-color: rgba(0,0,50,0);
             left: 0; right: 0;
             top: 0; bottom: 0;
-            clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, calc(100% - 5px) 0%, calc(100% - 5px) calc(100% - 5px), 5px calc(100% - 5px), 5px 0%);
+            /* clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, calc(100% - 5px) 0%, calc(100% - 5px) calc(100% - 5px), 5px calc(100% - 5px), 5px 0%); */
+            clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, calc(100% - 5px) 0%, calc(100% - 5px) calc(100% - 5px), 5px calc(100% - 5px), 5px 5px, calc(100% - 5px) 5px, calc(100% - 5px) 0px);
             cursor: all-scroll;
             transition: background-color 0.3s ease-in;
         }
@@ -58,6 +61,13 @@
         .widg>p {
             padding: 5px;
         }
+        .sicon {
+            width: 16px;
+            fill: #00467c;
+            float: right;
+            margin: 3px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -67,11 +77,24 @@
         <p><label for="">Input Name:<input id="ttp" type="text"></label></p>
     </div>
     <script>
+        // visualViewport not available in FF, Edge
+        if (!window["visualViewport"]) {
+            window.visualViewport = {width:document.body.offsetWidth,height:document.body.offsetHeight};
+        }
         test1.addEventListener("mousedown",_w_mousedown);
+        test1.firstElementChild.addEventListener("mousedown", function(e){
+            window.adjustWidg = this.parentElement;
+            window.adjustWidg.startX = e.clientX;
+            window.adjustWidg.startY = e.clientY;
+            window.adjustWidg.movefunc = $drag;
+            document.body.style.cursor = "all-scroll";
+            window.addEventListener("mousemove", $drag);
+            window.addEventListener("mouseup", $done);
+        });
         function $top(e) {
             // adjust top edge
             if (e.clientY<48)
-                return;
+                return $done(e);
             var ow = window.adjustWidg;
             var delta = e.clientY - ow.startY;
             if (delta) {
@@ -91,8 +114,20 @@
             if (e.clientX>window.visualViewport.width-8)
                 return;
             var delta = e.clientX - ow.startX;
+            if ((ow.offsetWidth+delta)<300)
+                return $done(e);
             if (delta)
                 ow.style.width = (ow.offsetWidth + delta) + "px";
+            ow.startX = e.clientX;
+        }
+        function $drag(e) {
+            // move the whole window
+            var ow = window.adjustWidg;
+            var deltaX = e.clientX - ow.startX;
+            var deltaY = e.clientY - ow.startY;
+            ow.style.left = (ow.offsetLeft + deltaX) + "px";
+            ow.style.top = (ow.offsetTop + deltaY) + "px";
+            ow.startY = e.clientY;
             ow.startX = e.clientX;
         }
         function $bottomRight(e) {
@@ -106,6 +141,8 @@
                 return;
             var ow = window.adjustWidg;
             var delta = e.clientY - ow.startY;
+            if ((ow.offsetHeight+delta)<48)
+                return $done(e);
             if (delta)
                 ow.style.height = (ow.offsetHeight + delta) + "px";
             ow.startY = e.clientY;
@@ -121,6 +158,8 @@
                 return;
             var ow = window.adjustWidg;
             var delta = e.clientX - ow.startX;
+            if ((ow.offsetWidth-delta)<300)
+                return $done(e);
             if (delta) {
                 ow.style.left = (e.clientX) + "px";
                 ow.style.width = (ow.offsetWidth - delta) + "px";
@@ -146,16 +185,43 @@
             if (f) {
                 this.startX = e.clientX;
                 this.startY = e.clientY;
+                this.movefunc = f;
                 window.adjustWidg = this;
+                document.body.style.cursor = "all-scroll";
                 window.addEventListener("mousemove", f);
-                var $done = function(ev){
-                    window.removeEventListener("mousemove", f);
-                    window.removeEventListener("mouseup", $done);
-                    window.adjustWidg = undefined;
-                }
                 window.addEventListener("mouseup", $done);
             }
         }
+        function $done(e){
+            window.removeEventListener("mousemove", window.adjustWidg.movefunc);
+            window.removeEventListener("mouseup", $done);
+            window.adjustWidg = undefined;
+            document.body.style.cursor = "auto";
+        }
+
+        /* svg stuff */
+        function svgNSGet(tag, attr) {
+            var a, se = (typeof tag == "object") ? tag : document.createElementNS("http://www.w3.org/2000/svg", tag);
+            for (a in attr)
+                if (a == "innerHTML" || a == "textContent")
+                    se[a] = attr[a];
+                else {
+                    if (a.slice(0,5)=="xlink")
+                        se.setAttributeNS("http://www.w3.org/1999/xlink", a, attr[a]);
+                    else
+                        se.setAttributeNS(null, a, attr[a]);
+                }
+            return se;
+        }
+        let svg = svgNSGet("svg",{viewBox:"0 0 16 16", width:0, height:0});
+        let defs = svgNSGet("defs");
+        defs.appendChild(svgNSGet("path",{id:"cross", d:"M15.854 12.854c-0-0-0-0-0-0l-4.854-4.854 4.854-4.854c0-0 0-0 0-0 0.052-0.052 0.090-0.113 0.114-0.178 0.066-0.178 0.028-0.386-0.114-0.529l-2.293-2.293c-0.143-0.143-0.351-0.181-0.529-0.114-0.065 0.024-0.126 0.062-0.178 0.114 0 0-0 0-0 0l-4.854 4.854-4.854-4.854c-0-0-0-0-0-0-0.052-0.052-0.113-0.090-0.178-0.114-0.178-0.066-0.386-0.029-0.529 0.114l-2.293 2.293c-0.143 0.143-0.181 0.351-0.114 0.529 0.024 0.065 0.062 0.126 0.114 0.178 0 0 0 0 0 0l4.854 4.854-4.854 4.854c-0 0-0 0-0 0-0.052 0.052-0.090 0.113-0.114 0.178-0.066 0.178-0.029 0.386 0.114 0.529l2.293 2.293c0.143 0.143 0.351 0.181 0.529 0.114 0.065-0.024 0.126-0.062 0.178-0.114 0-0 0-0 0-0l4.854-4.854 4.854 4.854c0 0 0 0 0 0 0.052 0.052 0.113 0.090 0.178 0.114 0.178 0.066 0.386 0.029 0.529-0.114l2.293-2.293c0.143-0.143 0.181-0.351 0.114-0.529-0.024-0.065-0.062-0.126-0.114-0.178z"}));
+        svg.appendChild(defs);
+        document.body.appendChild(svg);
+        let icon = svgNSGet("svg",{viewBox:"0 0 16 16", class:"sicon"});
+        icon.appendChild(svgNSGet("use", {"xlink:href":"#cross"}));
+        test1.firstElementChild.appendChild(icon);
+        
     </script>
 </body>
 </html>

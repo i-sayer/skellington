@@ -29,12 +29,12 @@
             position: fixed;
             top: 60px;
             left: 90px;
-            background-color: royalblue;
             display: inline-block;
             border: 0.5px solid currentColor;
             min-height: 3em;
-            min-width: 300px;
-            background-color: rgb(225, 229, 232);
+            min-width: 160px;
+            background-color: rgba(190,190,190,0.66);
+            backdrop-filter: blur(6px);
             box-shadow: rgb(51, 51, 51) 0px 1px 4px;
             box-sizing: border-box;
             user-select: none;
@@ -64,14 +64,14 @@
             padding: 8px;
         }
         .sicon {
-            width: 18px;
+            width: 13px;
             fill: currentColor;
             float: right;
             margin: 3px;
             cursor: pointer;
         }
         .sicon.big {
-            width: 28px;
+            width: 32px;
         }
         .year4cycleadder {
             display:flex;
@@ -91,22 +91,32 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(126px, 1fr));
             gap: 6px;
+            margin:0;
         }
         .cycle {
             position: relative;
-            padding: 4px;
+            padding: 6px;
+            border-radius: 5px;
             font-size: 0.75em;
             background-color: whitesmoke;
-            clip-path: polygon(0% 0%, calc(100% - 1em) 0%, 100% 1em, 100% 100%, 0 100%);
+            clip-path: polygon(0% 0%, calc(100% - 1.4em) 0%, 100% 1.4em, 100% 100%, 0 100%);
+        }
+        .selected {
+            background-color: #bb1919;
+            color: whitesmoke;
         }
         .cycle::after {
             content: attr(data-cycle);
             position: absolute;
+            display: inline-block;
             font-weight: 700;
-            font-size: 2.1em;
-            bottom: 0;
+            font-size: 1.9em;
+            bottom: 2px;
             right: 2px;
-            color: cadetblue;
+            color: #bb1919;
+        }
+        .selected.cycle::after {
+            background-color: white;
         }
         .cycle>h3 {
             margin: 0;
@@ -130,6 +140,8 @@
         if (!window["visualViewport"]) {
             window.visualViewport = {width:document.body.offsetWidth,height:document.body.offsetHeight};
         }
+        let dateb = new Date();
+
         function makeWidg(options){
             var newwidg = _z.dom("div.widg>h3;title+p", options);
             newwidg.addEventListener("mousedown",_w_mousedown);
@@ -155,9 +167,11 @@
             }
             return newwidg.getElementsByTagName("button");
         }
+
         let b = makeWidg({title:"Add Cycles to Year4", id:"y4cycleadder", icon:"clipboard"});
-        b[0].onclick = e => {y4cycles.lastElementChild.appendChild(newCycleCard())};
         makeWidg({title:"Year4 Cycles", id:"y4cycles"});
+        b[0].onclick = e => {y4cycles.lastElementChild.appendChild(newCycleCard())};
+        b[0].click();b[0].click();
         function $top(e) {
             // adjust top edge
             if (e.clientY<48)
@@ -181,7 +195,7 @@
             if (e.clientX>window.visualViewport.width-8)
                 return;
             var delta = e.clientX - ow.startX;
-            if ((ow.offsetWidth+delta)<300)
+            if ((ow.offsetWidth+delta)<parseInt(getComputedStyle(ow).minWidth))
                 return $done(e);
             if (delta)
                 ow.style.width = (ow.offsetWidth + delta) + "px";
@@ -225,7 +239,7 @@
                 return;
             var ow = window.adjustWidg;
             var delta = e.clientX - ow.startX;
-            if ((ow.offsetWidth-delta)<300)
+            if ((ow.offsetWidth-delta)<parseInt(getComputedStyle(ow).minWidth))
                 return $done(e);
             if (delta) {
                 ow.style.left = (e.clientX) + "px";
@@ -308,16 +322,23 @@
         svg.appendChild(defs);
         document.body.appendChild(svg);
 
-        let dateb = new Date();
-
         function newCycleCard() {
             let card = _z.dom("div.cycle>h3+h3^Places 0/0");
             let datec = new Date(dateb.getTime()+604800000);
             let f = (dateb.getMonth()==datec.getMonth())?"n":"n m";
             card.firstElementChild.textContent = _z.date.format(f, dateb)+_z.date.format(" - n m", datec);
             dateb = new Date(dateb.getTime()+604800000+604800000);
-            card.setAttribute("data-cycle", y4cycles.lastElementChild.children.length+1);
+            let ix = y4cycles.lastElementChild.children.length;
+            if (ix==0)
+                card.classList.add("selected");
+            card.setAttribute("data-cycle", ix+1);
+            card.addEventListener("click", radioSelect);
             return card;
+        }
+        function radioSelect(ev){
+            for (let x = this.parentElement.firstElementChild; x; x=x.nextElementSibling) {
+                x.classList[(x===this)?"add":"remove"]("selected");
+            }
         }
         
     </script>

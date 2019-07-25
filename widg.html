@@ -48,7 +48,7 @@
             top: 0; bottom: 0;
             /* clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, calc(100% - 5px) 0%, calc(100% - 5px) calc(100% - 5px), 5px calc(100% - 5px), 5px 0%); */
             clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%, calc(100% - 5px) 0%, calc(100% - 5px) calc(100% - 5px), 5px calc(100% - 5px), 5px 5px, calc(100% - 5px) 5px, calc(100% - 5px) 0px);
-            cursor: all-scroll;
+            cursor: crosshair;
             transition: background-color 0.3s ease-in;
         }
         .widg:hover::before {
@@ -58,7 +58,7 @@
             margin: 1px;
             padding: 3px;
             background: linear-gradient(rgb(255, 255, 255), rgb(204, 204, 204));
-            cursor: grab;
+            cursor: move;
         }
         .widg>p {
             padding: 8px;
@@ -73,7 +73,7 @@
         .sicon.big {
             width: 28px;
         }
-        .year2cycleadder {
+        .year4cycleadder {
             display:flex;
             flex-direction:column;
             align-items: center;
@@ -87,6 +87,30 @@
             font-size: 1em;
             color: inherit;
         }
+        #y4cycles>p {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(126px, 1fr));
+            gap: 6px;
+        }
+        .cycle {
+            position: relative;
+            padding: 4px;
+            font-size: 0.75em;
+            background-color: whitesmoke;
+            clip-path: polygon(0% 0%, calc(100% - 1em) 0%, 100% 1em, 100% 100%, 0 100%);
+        }
+        .cycle::after {
+            content: attr(data-cycle);
+            position: absolute;
+            font-weight: 700;
+            font-size: 2.1em;
+            bottom: 0;
+            right: 2px;
+            color: cadetblue;
+        }
+        .cycle>h3 {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -95,10 +119,10 @@
         <h3>Test Window</h3>
         <p><label for="">Input Name:<input id="ttp" type="text"></label></p>
     </div> -->
-    <template id="y2cycleadder_">
-        <div class="year2cycleadder">
+    <template id="y4cycleadder_">
+        <div class="year4cycleadder">
             <button>Add another cycle<svg viewbox="0 0 16 16" class="sicon big"><use xlink:href="#cog"></use></svg></button>
-            <small>Clicking this button might one day add a cycle card to the <strong>Year2 Cycles</strong> window</small>
+            <small>Clicking this button will add a cycle card to the <strong>Year4 Cycles</strong> window</small>
         </div>
     </template>
     <script>
@@ -129,9 +153,11 @@
             if (prev && prev.classList.contains("widg")){
                 newwidg.style.top = prev.offsetTop + prev.offsetHeight + "px";
             }
+            return newwidg.getElementsByTagName("button");
         }
-        makeWidg({title:"Year2 Cycles", id:"y2cycles"});
-        makeWidg({title:"Add Cycles to Year2", id:"y2cycleadder", icon:"plus"});
+        let b = makeWidg({title:"Add Cycles to Year4", id:"y4cycleadder", icon:"clipboard"});
+        b[0].onclick = e => {y4cycles.lastElementChild.appendChild(newCycleCard())};
+        makeWidg({title:"Year4 Cycles", id:"y4cycles"});
         function $top(e) {
             // adjust top edge
             if (e.clientY<48)
@@ -224,7 +250,7 @@
             window.adjustWidg.startX = e.clientX;
             window.adjustWidg.startY = e.clientY;
             window.adjustWidg.movefunc = $drag;
-            document.body.style.cursor = "all-scroll";
+            document.body.style.cursor = "move";
             window.addEventListener("mousemove", $drag);
             window.addEventListener("mouseup", $done);
         }
@@ -245,7 +271,7 @@
                 this.movefunc = f;
                 window.adjustWidg = this;
                 makeThisTop(e);
-                document.body.style.cursor = "all-scroll";
+                document.body.style.cursor = "crosshair";
                 window.addEventListener("mousemove", f);
                 window.addEventListener("mouseup", $done);
             }
@@ -277,10 +303,22 @@
         defs.appendChild(svgNSGet("path",{id:"cog", d:"M14.59 9.535c-0.839-1.454-0.335-3.317 1.127-4.164l-1.572-2.723c-0.449 0.263-0.972 0.414-1.529 0.414-1.68 0-3.042-1.371-3.042-3.062h-3.145c0.004 0.522-0.126 1.051-0.406 1.535-0.839 1.454-2.706 1.948-4.17 1.106l-1.572 2.723c0.453 0.257 0.845 0.634 1.123 1.117 0.838 1.452 0.336 3.311-1.12 4.16l1.572 2.723c0.448-0.261 0.967-0.41 1.522-0.41 1.675 0 3.033 1.362 3.042 3.046h3.145c-0.001-0.517 0.129-1.040 0.406-1.519 0.838-1.452 2.7-1.947 4.163-1.11l1.572-2.723c-0.45-0.257-0.839-0.633-1.116-1.113zM8 11.24c-1.789 0-3.24-1.45-3.24-3.24s1.45-3.24 3.24-3.24c1.789 0 3.24 1.45 3.24 3.24s-1.45 3.24-3.24 3.24z"}));
         defs.appendChild(svgNSGet("path",{id:"plus", d:"M15.5 6h-5.5v-5.5c0-0.276-0.224-0.5-0.5-0.5h-3c-0.276 0-0.5 0.224-0.5 0.5v5.5h-5.5c-0.276 0-0.5 0.224-0.5 0.5v3c0 0.276 0.224 0.5 0.5 0.5h5.5v5.5c0 0.276 0.224 0.5 0.5 0.5h3c0.276 0 0.5-0.224 0.5-0.5v-5.5h5.5c0.276 0 0.5-0.224 0.5-0.5v-3c0-0.276-0.224-0.5-0.5-0.5z"}));
         defs.appendChild(svgNSGet("path",{id:"minus", d:"M0 6.5v3c0 0.276 0.224 0.5 0.5 0.5h15c0.276 0 0.5-0.224 0.5-0.5v-3c0-0.276-0.224-0.5-0.5-0.5h-15c-0.276 0-0.5 0.224-0.5 0.5z"}));
-        defs.appendChild(svgNSGet("path",{id:"clipboard", d:"M14.5 2h-4.5c0-1.105-0.895-2-2-2s-2 0.895-2 2h-4.5c-0.276 0-0.5 0.224-0.5 0.5v13c0 0.276 0.224 0.5 0.5 0.5h13c0.276 0 0.5-0.224 0.5-0.5v-13c0-0.276-0.224-0.5-0.5-0.5zM8 1c0.552 0 1 0.448 1 1s-0.448 1-1 1c-0.552 0-1-0.448-1-1s0.448-1 1-1zM14 15h-12v-12h2v1.5c0 0.276 0.224 0.5 0.5 0.5h7c0.276 0 0.5-0.224 0.5-0.5v-1.5h2v12z"}));//<path fill="#000000" d="M7 13.414l-3.207-3.707 0.914-0.914 2.293 1.793 4.293-3.793 0.914 0.914z"/>
+        defs.appendChild(svgNSGet("path",{id:"clipboard", d:"M14.5 2h-4.5c0-1.105-0.895-2-2-2s-2 0.895-2 2h-4.5c-0.276 0-0.5 0.224-0.5 0.5v13c0 0.276 0.224 0.5 0.5 0.5h13c0.276 0 0.5-0.224 0.5-0.5v-13c0-0.276-0.224-0.5-0.5-0.5zM8 1c0.552 0 1 0.448 1 1s-0.448 1-1 1c-0.552 0-1-0.448-1-1s0.448-1 1-1zM14 15h-12v-12h2v1.5c0 0.276 0.224 0.5 0.5 0.5h7c0.276 0 0.5-0.224 0.5-0.5v-1.5h2v12z M7 13.414l-3.207-3.707 0.914-0.914 2.293 1.793 4.293-3.793 0.914 0.914z"}));//<path fill="#000000" d="M7 13.414l-3.207-3.707 0.914-0.914 2.293 1.793 4.293-3.793 0.914 0.914z"/>
         defs.appendChild(svgNSGet("path",{id:"menu", d:"M1 3h14v3h-14zM1 7h14v3h-14zM1 11h14v3h-14z"}));
         svg.appendChild(defs);
         document.body.appendChild(svg);
+
+        let dateb = new Date();
+
+        function newCycleCard() {
+            let card = _z.dom("div.cycle>h3+h3^Places 0/0");
+            let datec = new Date(dateb.getTime()+604800000);
+            let f = (dateb.getMonth()==datec.getMonth())?"n":"n m";
+            card.firstElementChild.textContent = _z.date.format(f, dateb)+_z.date.format(" - n m", datec);
+            dateb = new Date(dateb.getTime()+604800000+604800000);
+            card.setAttribute("data-cycle", y4cycles.lastElementChild.children.length+1);
+            return card;
+        }
         
     </script>
 </body>

@@ -64,7 +64,7 @@ var _z = (function () {
                         var o = formatitems[s.substr(1)];
                         if (typeof o == "object") {
                             for (var k in o) {
-                                p.setAttribute(k, o[k]);
+                                p.setAttribute(null, k, o[k]);
                             }
                         }
                         else {

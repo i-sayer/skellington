@@ -15,17 +15,22 @@
             background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAXCAMAAABDEo1gAAAALVBMVEXu7u7z8/Pt7e3r6+vv7+/x8fHs7Ozw8PDo6Ojq6urp6eny8vL09PT19fX29vbJGhcbAAAB5klEQVR42k2TW4IkIQgEUUQLofb+x91At2b2x1eFaZJ0i7TWdTQTnastfaa1ob4lQraPlmtvy5z7nGvR7h5vyjMDfjOKF+2lYk1UlnjRiAh0X12SeTR4Lx2D1s48Z9Rjl0ZEZGvL0HloWZyin4mTzOz76Y31R6dwN7LJ3tCd8/LTGV0zl47pnScv3eBiYIa3cdt1+uWn1TGu6wH4S8cIobBaYrtT97r8o+htaj843KFld+EuG0ZE4+WrkufNba6Tr/3QruKH58VAxzImfHIX6qsD+gQrNmRCVlbF06kw+JapeyT0l0m1i+aEmBZvgoB115PPCPO5PnpDR4vpqyXVoZxv872K1Bq1/5eQznKyiu/GDE+SBR5+ROj+6BxYq0b5oKxnivIBAYdekHL8yEc3eXh6eVeOTR9BNdCHZpTMUB/RLo1lmy4LO2UdXvQE3W/Yau/bH/noMZHsvjUqqt7SxHBkR06XyVzMv5ncpPRkiusgGSt9FntmmjrcR1PShDdc0BLD2BLWuBhR1zPHvyKKdjKx0+PjIA1XgrJd/1OF/taCYqHJ7g3Xo6fQqh3cWbHHwukv9LPaCy2sjxnUjjaD+DPy8OvyydcK4v4Gi65uNuiZf5rgINhdfb9/DLF+aS/6sXjtRiB/AetLF9OdGDz6AAAAAElFTkSuQmCC);
             margin: 0;
             height: 100vh;
-            color: rgba(0,20,40,0.81);
+            color: rgba(0,20,60,0.61);
         }
         h1 {
+            position: fixed;
+            margin-top: 0;
+            display: flex;
+            align-items: flex-end;
+        }
+        h1>span{
             background-color: #565656;
             color: transparent;
             text-shadow: 0px 2px 3px rgba(255,255,255,0.5);
             -webkit-background-clip: text;
             -moz-background-clip: text;
             background-clip: text;
-            position: fixed;
-            margin-top: 0;
+            margin: 0 1em;
         }
         .widg {
             position: fixed;
@@ -85,6 +90,9 @@
         .sicon.big {
             width: 32px;
         }
+        .sicon.left {
+            float: left;
+        }
         .year4cycleadder {
             display:flex;
             flex-direction:column;
@@ -112,7 +120,7 @@
             border-radius: 5px;
             font-size: 0.75em;
             background-color: whitesmoke;
-            clip-path: polygon(0% 0%, calc(100% - 1.4em) 0%, 100% 1.4em, 100% 100%, 0 100%);
+            clip-path: polygon(0% 0%, calc(100% - 1.1em) 0%, 100% 1.1em, 100% 100%, 0 100%);
         }
         .selected {
             background-color: #bb1919;
@@ -138,7 +146,11 @@
     </style>
 </head>
 <body>
-    <h1>Widget Test Box<svg viewbox="0 0 16 16" class="sicon big"><use xlink:href="#menu"></use></svg></h1>
+    <h1>
+        <svg viewbox="0 0 16 16" class="sicon big left"><use xlink:href="#menu"></use></svg>
+        <span>Widget Test Box</span>
+        <svg viewbox="0 0 16 16" class="sicon big"><use xlink:href="#clinic"></use></svg>
+    </h1>
     <!-- <div id="test1" class="widg">
         <h3>Test Window</h3>
         <p><label for="">Input Name:<input id="ttp" type="text"></label></p>
@@ -333,6 +345,7 @@
         defs.appendChild(svgNSGet("path",{id:"minus", d:"M0 6.5v3c0 0.276 0.224 0.5 0.5 0.5h15c0.276 0 0.5-0.224 0.5-0.5v-3c0-0.276-0.224-0.5-0.5-0.5h-15c-0.276 0-0.5 0.224-0.5 0.5z"}));
         defs.appendChild(svgNSGet("path",{id:"clipboard", d:"M14.5 2h-4.5c0-1.105-0.895-2-2-2s-2 0.895-2 2h-4.5c-0.276 0-0.5 0.224-0.5 0.5v13c0 0.276 0.224 0.5 0.5 0.5h13c0.276 0 0.5-0.224 0.5-0.5v-13c0-0.276-0.224-0.5-0.5-0.5zM8 1c0.552 0 1 0.448 1 1s-0.448 1-1 1c-0.552 0-1-0.448-1-1s0.448-1 1-1zM14 15h-12v-12h2v1.5c0 0.276 0.224 0.5 0.5 0.5h7c0.276 0 0.5-0.224 0.5-0.5v-1.5h2v12z M7 13.414l-3.207-3.707 0.914-0.914 2.293 1.793 4.293-3.793 0.914 0.914z"}));//<path fill="#000000" d="M7 13.414l-3.207-3.707 0.914-0.914 2.293 1.793 4.293-3.793 0.914 0.914z"/>
         defs.appendChild(svgNSGet("path",{id:"menu", d:"M1 3h14v3h-14zM1 7h14v3h-14zM1 11h14v3h-14z"}));
+        defs.appendChild(svgNSGet("path",{id:"clinic", d:"M 5.0976562,1.9394531 0.56445312,5.1621094 1.8984375,5.1601562 V 14.158203 H 14.033203 V 5.1347656 l 1.439453,-0.00391 -4.607422,-3.1914063 z M 6.953125,5.6971811 H 8.9785156 V 8.0936655 H 11.373047 V 10.119057 H 8.9785156 v 2.394531 H 6.953125 V 10.119057 H 4.5585938 V 8.0936655 H 6.953125 Z"}));
         svg.appendChild(defs);
         document.body.appendChild(svg);
 

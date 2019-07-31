@@ -71,23 +71,29 @@
             width: 0.25vmin;
             min-width: 1px;
         }
-        header, footer {
+        header {
             color:chartreuse;
             font-size: 500%;
             font-weight: 700;
             text-align: center;
         }
+        header>span:first-child {
+            display: inline-block;
+            padding: 12px;
+            color: black;
+            background-color: chartreuse;
+            margin-right: 0.5em;
+        }
 
     </style>
 </head>
 <body>
-    <header></header>
+    <header><span></span><span></span></header>
     <div class="face">
             <div id="hourhand"></div>
             <div id="minutehand"></div>
             <div id="secondhand"></div>
     </div>
-    <footer></footer>
     <script>
         window.setInterval(e => {
             let dt = new Date();
@@ -109,10 +115,10 @@
                 showDay(dt);
         }, 1000);
         function showDay(dt){
-            let headfoot = document.querySelectorAll("header,footer");
-            if (headfoot.length==2){
-                headfoot[0].textContent = dt.getDate();
-                headfoot[1].textContent = 
+            let dd = document.querySelectorAll("header>span");
+            if (dd.length==2){
+                dd[0].textContent = dt.getDate();
+                dd[1].textContent = 
                     ["SUN","MON","TUES","WEDNES","THURS","FRI","SATUR"][dt.getDay()]+"DAY";
             }
         }

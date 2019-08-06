@@ -38,16 +38,14 @@
         }
         .face::after {
             content:"";
-            height:4vmin;
-            width:4vmin;
+            height:5vmin;
+            width:5vmin;
             box-sizing: border-box;
             position:absolute;
             border-radius: 50%;
-            background-color: gray;
-            background: radial-gradient(white 40%, #999);
-            border: 1px solid #777;
-            left: calc(50% - 2vmin);
-            top: calc(50% - 2vmin);
+            background-color: black;
+            left: calc(50% - 2.5vmin);
+            top: calc(50% - 2.5vmin);
             box-shadow: 2px 4px 11px -3px rgba(0,0,0,0.5);
         }
         #hourhand,#minutehand,#secondhand {
@@ -80,18 +78,25 @@
             text-align: center;
             display: flex;
             flex-direction: row-reverse;
-            justify-content: space-around;
+            justify-content: space-between;
             position: absolute;
             width: 100vw;
             z-index: 9;
         }
         header>span:first-child {
-            display: inline-block;
-            padding: 6px 20px;
+            display: inline-flex;
+            flex-direction: column;
+            font-size:80%;
+            padding: 0 6px;
             color: black;
             background-color: chartreuse;
-            margin-right: 0.5em;
+            line-height: 1;
+        }
+        header>span:first-child>span {
             font-size: 120%;
+        }
+        header>span>span>sup {
+            font-size: 50%;
         }
 
     </style>
@@ -118,17 +123,18 @@
             hands.forEach(u=>{
                 u.u.style.opacity = 1;
                 u.u.style.transitionProperty = (s==0)?"none":"transform, opacity";
-                u.u.style.transform = `translateX( calc(${half}px - ${u.w/2}vmax)) rotate(${u.a}deg)`;
+                u.u.style.transform = `translateX( calc(${half}px - ${u.w/2}vmin)) rotate(${u.a}deg)`;
             });
             if (m==0)
                 showDay(dt);
         }, 1000);
         function showDay(dt){
             let dd = document.querySelectorAll("header>span");
+            let lt = dt.toLocaleDateString('en', {weekday:"long", day:"numeric", month:"short"}).split(' ');
+            let ex = lt[2]<20?lt[2]:lt[2]%10;
             if (dd.length==2){
-                dd[0].textContent = dt.getDate();
-                dd[1].textContent =
-                    ["Son","Mom","Chews","Wednes","Thors","Fria","Saturn"][dt.getDay()]+"day";
+                dd[0].innerHTML = `${lt[1].toUpperCase()} <span>${lt[2]}<sup>${{1:'st',2:'nd',3:'rd'}[ex]||'th'}</sup></span>`;
+                dd[1].textContent = lt[0].slice(0,-1);
             }
         }
         showDay(new Date());

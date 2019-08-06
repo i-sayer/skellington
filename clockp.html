@@ -140,11 +140,14 @@
         }, 1000);
         function showDay(dt){
             let dd = document.querySelectorAll("header>span, footer>span");
-            let lt = dt.toLocaleDateString('nz', {weekday:"long", day:"numeric", month:"short"}).split(' ');
-            let ex = lt[2]<20?lt[2]:lt[2]%10;
+            // piece of crap function varies order on android so need to sort. assume day<month<weekday
+            // also comma after weekday not present on android
+            let lt = dt.toLocaleDateString('nz', {weekday:"long", day:"numeric", month:"short"}).split(' ')
+                .sort((a,b)=>a.length-b.length);
+            let ex = lt[0]<20?lt[0]:lt[0]%10;
             if (dd.length==3){
-                dd[0].innerHTML = `${lt[1].toUpperCase()} <span>${lt[2]}<sup>${{1:'st',2:'nd',3:'rd'}[ex]||'th'}</sup></span>`;
-                dd[1].textContent = lt[0].slice(0,-1);
+                dd[0].innerHTML = `${lt[1].toUpperCase()} <span>${lt[0]}<sup>${{1:'st',2:'nd',3:'rd'}[ex]||'th'}</sup></span>`;
+                dd[1].textContent = (lt[2].slice(-1)==',')?lt[2].slice(0,-1):lt[2];
                 dd[2].textContent = dt.toLocaleDateString('fr', {weekday: 'long'});
             }
         }

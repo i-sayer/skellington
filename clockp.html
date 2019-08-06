@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="desciption" content="This version is optimised for portrait mode tablet inside smoked glass cabinet. Hence no margin.">
+    <!-- This version is optimised for portrait mode tablet inside smoked glass cabinet. Hence no margin. -->
     <title>CLock</title>
     <style>
         :root {
@@ -98,8 +98,16 @@
         }
         header>span>span>sup {
             font-size: 50%;
+            font-weight: 900;
         }
-
+        footer {
+            position: fixed;
+            bottom: 0;
+            font-size: 500%;
+            color: #007fff;
+            text-align: center;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
@@ -109,6 +117,7 @@
             <div id="minutehand"></div>
             <div id="secondhand"></div>
     </div>
+    <footer><span>fr</span></footer>
     <script>
         window.setInterval(e => {
             let dt = new Date();
@@ -130,12 +139,13 @@
                 showDay(dt);
         }, 1000);
         function showDay(dt){
-            let dd = document.querySelectorAll("header>span");
-            let lt = dt.toLocaleDateString('en', {weekday:"long", day:"numeric", month:"short"}).split(' ');
+            let dd = document.querySelectorAll("header>span, footer>span");
+            let lt = dt.toLocaleDateString('nz', {weekday:"long", day:"numeric", month:"short"}).split(' ');
             let ex = lt[2]<20?lt[2]:lt[2]%10;
-            if (dd.length==2){
+            if (dd.length==3){
                 dd[0].innerHTML = `${lt[1].toUpperCase()} <span>${lt[2]}<sup>${{1:'st',2:'nd',3:'rd'}[ex]||'th'}</sup></span>`;
                 dd[1].textContent = lt[0].slice(0,-1);
+                dd[2].textContent = dt.toLocaleDateString('fr', {weekday: 'long'});
             }
         }
         showDay(new Date());

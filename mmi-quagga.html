@@ -7,47 +7,78 @@
     <script src="quagga.min.js"></script>
     <script src="script/tiff.min.js"></script>
     <style>
-        h3+canvas {
-            /* border: 1px solid orange; */
+        label[for]+input {
             display: none;
+        }
+        label+input+canvas {
+            border: 1px solid orange;
+            display: none;
+        }
+        label+input:checked+canvas {
+            display: inline-block;
         }
         #output>canvas{
-            max-width: 50%;
+            max-width: 70%;
+            opacity: 0.65;
         }
         label>input[type=file] {
-            display: none;
+            opacity: 0;
+            position: absolute;
+            left: 0; top: 0; bottom: 0; right: 0;
+        }
+        label>span {
+            display: inline-block;
+            padding: 2em;
         }
         label {
-            padding: 2em;
-            border: 1px solid silver;
+            position: relative;
+            font-size: 2vw;
+            max-width: 30vw;
+            background-color: #bb1919;
+            color: white;
             grid-column: 1 / -1;
         }
+        label:hover {
+            box-shadow: 0 4px 7px 4px rgba(0,0,0,0.5);
+        }
         body {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            grid-template-rows: repeat(12, calc(100vh/12));
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            color: rgba(0,0,0,.65);
         }
-        div {
-            grid-column: span 4;
+        div.main {
+            display: flex;
         }
-        div#output {
-            grid-column: span 8;
-            grid-row: span 12;            
+        div.side {
+            display: flex;
+            flex-direction: column;
         }
     </style>
 </head>
 <body>
-    <label for="inputFile">Drop your tiff files here
-        <input type="file" id="inputFile"/>
+    <label for="inputFile">
+        <span>Click to select or drop your tif files here</span>
+        <input type="file" id="inputFile" multiple/>
     </label>
 <!-- <img id="preview" width="210" height="297"/> -->
-<div id="output"></div>
-<div><h3></h3><canvas id="Canvas1"></canvas></div>
-<div><h3></h3><canvas id="Canvas3"></canvas></div>
-<div><h3></h3><canvas id="Canvas2"></canvas></div>
+<div class="main">
+    <div id="output"></div>
+    <div class="side">
+        <div><label for="l1"></label><input id="l1" type="checkbox"/><canvas id="Canvas1"></canvas></div>
+        <div><label for="l2"></label><input id="l2" type="checkbox"/><canvas id="Canvas2"></canvas></div>
+        <div><label for="l3"></label><input id="l3" type="checkbox"/><canvas id="Canvas3"></canvas></div>
+    </div>
+</div>
 <script>
-    inputFile.oninput = function(e) {
+    function processTif(file){
+        
+    }
+    inputFile.onchange = function(e) {
+        e.preventDefault();
         var reader = new FileReader();
+        if (inputFile.files[0].name.slice(-4)!=".tif")
+            return alert("TIF Only");
         reader.onloadend = function(u)
         {
             //preview.src = reader.result;
@@ -58,7 +89,7 @@
                 let w = tiff.width();
                 let h = tiff.height();
                 [
-                    {c:Canvas1, x:0, y:h*0.15, w:w*0.5, h:h*0.125},
+                    {c:Canvas1, x:0, y:h*0.15, w:w*0.45, h:h*0.125},
                     {c:Canvas2, x:w*0.45, y:h*0.15, w:w*0.55, h:h*0.125},
                     {c:Canvas3, x:0, y:h-(h*0.2), w:w*0.75, h:h*0.2}
                 ].forEach(function (c) {
@@ -77,6 +108,38 @@
         // reader.readAsDataURL(inputFile.files[0]);
         reader.readAsArrayBuffer(inputFile.files[0]);
     }
+
+    function singleAsPromise(canv) {
+        return new Promise(function(resolve) {
+            Quagga.decodeSingle({
+                decoder: {
+                    readers: ["code_39_reader"]
+                },
+                locate: true,
+                src: canv.toDataURL()
+            }, function (result) {
+                    resolve(result)
+                }
+            );
+        });
+    }
+
+    async function waitForDecode(canv){
+        return await singleAsPromise(canv);
+    }
+
+    async function barcodeRead(canvas){
+        var r = await waitForDecode(canvas);
+        var h = canvas.previousElementSibling.previousElementSibling;
+        h.textContent = r.codeResult&&r.codeResult.code||"not detected";
+    }
+
+    async function getResults() {
+        await barcodeRead(Canvas1);
+        await barcodeRead(Canvas2);
+        await barcodeRead(Canvas3);
+    }
+  /*
     function getResults(){
         // can we get the barcodes yet?
         Quagga.decodeSingle({
@@ -127,7 +190,7 @@
             });                
         });                
 
-    }
+    }*/
 </script>
 </body>
 </html>

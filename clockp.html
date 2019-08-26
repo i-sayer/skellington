@@ -29,8 +29,9 @@
             padding-bottom: 100vmin;
             margin: auto;
             box-sizing: border-box;
-            background-image: url(clock3.svg);
-            background-size: cover;
+            background-image: url(clock3.svg), url(images/connect-logo.svg);
+            background-size: cover, 300px;
+            background-position: 0 0, 50% 70%;
             background-repeat: no-repeat;
             background-color: aliceblue;
             position: relative;
@@ -74,7 +75,7 @@
         }
         header {
             color:chartreuse;
-            font-size: 500%;
+            font-size: 400%;
             font-weight: 700;
             text-align: center;
             display: flex;
@@ -88,6 +89,7 @@
             display: inline-flex;
             flex-direction: column;
             font-size:80%;
+            font-weight: 400;
             padding: 0 6px;
             color: black;
             background-color: chartreuse;
@@ -95,19 +97,28 @@
         }
         header>span:first-child>span {
             font-size: 120%;
+            font-weight: 700;
+            letter-spacing: -0.75vw;
         }
         header>span>span>sup {
             font-size: 50%;
             font-weight: 900;
+            letter-spacing: 0;
         }
         footer {
             position: fixed;
             bottom: 0;
-            font-size: 500%;
+            font-size: 400%;
             color: #007fff;
             text-align: center;
             width: 100%;
         }
+        @media (orientation: landscape){
+            footer {
+                display: none;
+            }
+        }
+
     </style>
 </head>
 <body>

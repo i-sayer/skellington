@@ -139,13 +139,19 @@
             let hands = [
                 {u:hourhand, a:(h+m*(1/60))*30, w:2},
                 {u:minutehand, a:(m+s*(1/60))*6, w:1 },
-                {u:secondhand, a:s*6, w:0.5}
+                {u:secondhand, a:(s>0)?s*6:359.9, w:0.5}
             ];
+            if (s==0)
+                window.setTimeout(f => {
+                    let u = hands[2];
+                    u.u.style.transitionDuration = "1ms";
+                    u.u.style.transform = `translateX( calc(${half}px - ${u.w/2}vmin)) rotate(0deg)`;
+                }, 500);
 
             hands.forEach(u=>{
                 u.u.style.opacity = 1;
                 // u.u.style.transitionProperty = (s==0)?"none":"transform, opacity";
-                u.u.style.transitionDuration = (s==0)?"1ms":"125ms";
+                u.u.style.transitionDuration = "125ms";
                 u.u.style.transform = `translateX( calc(${half}px - ${u.w/2}vmin)) rotate(${u.a}deg)`;
             });
             if (m==0)

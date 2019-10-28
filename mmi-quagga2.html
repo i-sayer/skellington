@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Read MMI Scan</title>
+    <script src="quagga.min.js"></script>
+    <script src="script/tiff.min.js"></script>
+    <style>
+        label[for]+input {
+            display: none;
+        }
+        label+input+canvas {
+            border: 1px solid orange;
+            display: none;
+        }
+        label+input:checked+canvas {
+            display: inline-block;
+        }
+        label[data-tag]::before {
+            content: attr(data-tag)": ";
+        }
+        #output>canvas{
+            max-width: 70%;
+            opacity: 0.65;
+        }
+        label>input[type=file] {
+            opacity: 0;
+            position: absolute;
+            left: 0; top: 0; bottom: 0; right: 0;
+            min-width: 100%;
+        }
+        label>span {
+            display: inline-block;
+            padding: 2em;
+        }
+        label[for="inputFile"] {
+            position: relative;
+            font-size: 2vw;
+            max-width: 30vw;
+            background-color: #bb1919;
+            color: white;
+            grid-column: 1 / -1;
+        }
+        label:hover {
+            box-shadow: 0 4px 7px 4px rgba(0,0,0,0.5);
+        }
+        body {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            color: rgba(0,0,0,.65);
+        }
+        div.main {
+            display: flex;
+        }
+        div.side {
+            display: flex;
+            flex-direction: column;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 4px 8px;
+        }
+        tbody>tr:nth-child(odd) {
+            background-color: rgba(0,0,0,0.1);
+        }
+        th {
+            border-bottom: 2px solid;
+        }
+        td {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <template id="resultsTable">
+        <table>
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Interviewer Code</th>
+                    <th>Student AUID</th>
+                    <th>Station Code</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </template>
+    <template id="resultsTableRow">
+        <tr>
+            <td></td><td></td><td></td><td></td>
+        </tr>
+    </template>
+<label for="inputFile">
+        <span>Click to select or drop your tif files here</span>
+        <input type="file" id="inputFile" multiple/>
+    </label>
+<!-- <img id="preview" width="210" height="297"/> -->
+<div class="main">
+    <div id="output"></div>
+    <div class="side">
+        <div><label for="l1" data-tag="InterviewerCode"></label><input id="l1" type="checkbox"/><canvas id="Canvas1"></canvas></div>
+        <div><label for="l2" data-tag="StudentAUID"></label><input id="l2" type="checkbox"/><canvas id="Canvas2"></canvas></div>
+        <div><label for="l3" data-tag="StationCode"></label><input id="l3" type="checkbox"/><canvas id="Canvas3"></canvas></div>
+    </div>
+</div>
+<script>
+    var fileQueue = [];
+    var resultQueue = [];
+
+    function allProcessed() {
+        // show results of batch
+        var doutput = document.getElementById("output");
+        doutput.innerHTML = "";
+        doutput.nextElementSibling.innerHTML = "";
+
+        var t = doutput.appendChild(document.importNode(document.getElementById("resultsTable").content, true));
+        t = doutput.lastElementChild;
+        resultQueue.forEach(rec => {
+            t.lastElementChild.appendChild(document.importNode(document.getElementById("resultsTableRow").content, true));
+            let row = t.lastElementChild.lastElementChild;
+            [rec.fileName, ...rec.decoded.map(u=>u.val)].forEach((v,i)=>row.cells[i].textContent = v);
+        });
+        // let r = JSON.stringify(resultQueue);
+        // alert(r);
+    }
+
+    function processTif(){
+        file = fileQueue.shift();
+        if (!file)
+            return allProcessed();
+        resultQueue.unshift({fileName:file.name, decoded:[]});
+        var reader = new FileReader();
+        if (file.name.slice(-4)!=".tif") {
+            return alert(resultQueue[0].error = "file type error");
+        }
+        reader.onloadend = function(u)
+        {
+            //preview.src = reader.result;
+            var tiff = new Tiff({buffer: reader.result});
+            var tcanvas = tiff.toCanvas();
+            if (tcanvas) {
+                output.innerHTML = "";
+                output.appendChild(tcanvas);
+                let w = tiff.width();
+                let h = tiff.height();
+                [
+                    {c:Canvas1, x:0, y:h*0.15, w:w*0.45, h:h*0.125},
+                    {c:Canvas2, x:w*0.45, y:h*0.15, w:w*0.55, h:h*0.125},
+                    {c:Canvas3, x:0, y:h-(h*0.2), w:w*0.75, h:h*0.2}
+                ].forEach(function (c) {
+                    let ctx = c.c.getContext('2d');
+                    c.c.height = h/8;                
+                    c.c.width = w/8;                
+                    //ctx.filter = "blur(1.5px)";
+                    ctx.drawImage(
+                        tcanvas, c.x, c.y, c.w, c.h, 0, 0, w/8, h/8
+                    );
+                });
+                // get results
+                getResults();
+            }
+        };
+        // reader.readAsDataURL(inputFile.files[0]);
+        reader.readAsArrayBuffer(file);
+    }
+
+    inputFile.onchange = function(e) {
+        e.preventDefault();
+        fileQueue.push(...inputFile.files);
+        processTif();
+    }
+
+    function singleAsPromise(canv) {
+        return new Promise(resolve => {
+            Quagga.decodeSingle({
+                decoder: {
+                    readers: ["code_39_reader"]
+                },
+                locate: false,
+                src: canv.toDataURL()
+            }, (result) => {
+                    resolve(result)
+                }
+            );
+        });
+    }
+
+    async function waitForDecode(canv){
+        return await singleAsPromise(canv);
+    }
+
+    async function barcodeRead(canvas){
+        var r = await Promise.resolve(singleAsPromise(canvas));
+        var h = canvas.previousElementSibling.previousElementSibling;
+        h.textContent = r.codeResult&&r.codeResult.code||"not detected";
+        return {tag:h.dataset.tag, val:h.textContent};
+    }
+
+    async function getResults() {
+        resultQueue[0].decoded.push( await barcodeRead(Canvas1));
+        resultQueue[0].decoded.push( await barcodeRead(Canvas2));
+        resultQueue[0].decoded.push( await barcodeRead(Canvas3));
+        processTif(); // do next one if any
+    }
+</script>
+</body>
+</html>

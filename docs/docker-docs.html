@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docs</title>
+    <link rel="stylesheet" href="docs.css">
+</head>
+<body>
+    <main>
+    <header><span><strong>Author:</strong> Ian Sayer</span><span><strong>Last Modified:</strong> 11 March 2020</span></header>
+    <section>
+        <h2>Developer notes for Docker</h2>
+        <p>This document describes setup and use of Docker for Windows to facilitate local development of PHP applications in a Windows 10 environment.</p>
+        <div class="card-list">
+            <div class="card">
+                <h3>Source Repo</h3>
+                <p>The current UoA recommended repository is Atlassian Bitbucket Cloud. If the Web migration team has cloned your application, they will have created a repository which will include a docker file that specifies your VM. You will need to clone this repository onto your local machine.</p>
+                <p>You can use your code editor of choice. VSCode for example, will show you the folder/file structure of your application and has very good GIT integration.</p>
+                <dl>
+                    <h3>Prerequisites</h3>
+                    <dt>node.js</dt>
+                    <dd>link</dd>
+                    <dt>Git</dt>
+                    <dd>link</dd>
+                    <dt>Docker for Windows</dt>
+                    <dd>link</dd>
+                </dl>
+            </div>
+            <div class="card">
+                <h3>Docker image</h3>
+                <p>Before the first startup of your local VM, you must build the Docker Image from the dockerfile in the root of your cloned project repo.</p>
+                <div class="code">cd your_repos_folder/project_name
+docker build .</div>
+                <p>To verify the image has been created</p>
+                <div class="code">docker image ls
+<span>> REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+> &lt;none&gt;              &lt;none&gt;              283adac31095        2 days ago          431MB
+> php                 7.2-apache          ba07a75a195b        2 weeks ago         410MB</span></div>
+                <p>The image files persist until specifically deleted. We use the <strong>IMAGE ID</strong> when starting a container.</p>
+            </div>
+            <div class="card span-all">
+                <h3>Docker container</h3>
+                <p>The docker container provides an instance of the environment so that you can browse to <em>localhost</em> and test your web application. For a php+mysql application, you may need to provide environment variables in dev.env file specific to your MySql instance. In this example, the application is <em>electives</em> and the IMAGE ID is 283adac31095. To start the container:</p>
+                <div class="code">docker run -d -p 80:80 -v C:/full_path_to_repos/electives/html/:/var/www/html --env-file dev.env 283adac31095</div>
+                <p>The <strong>-d</strong> runs the container detatched or in the background. <strong>-p 80:80</strong> maps a local port to the container port respectively. <strong>--env-file dev.env</strong> uses the dev.env file in your repo root to supply the DB connection settings to your container. <strong class="important">Don't forget to include this file in the .gitignore or your DB connection details will be pushed to the cloud!</strong></p>
+                <p>The <strong>-v local_folder:container_folder</strong> option causes the containers source folder to be mapped to your local file system so that your edited code will be reflected when you reload the app in your browser.</p>
+            </div>
+        </div>
+</section>
+    </main>
+</body>
+</html>

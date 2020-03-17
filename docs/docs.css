@@ -1,0 +1,64 @@
+:root {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 18px;
+    display: grid;
+    --thick-border: 5px;
+    --color-main: #048;
+    color: var(--color-main);
+    line-height: 1.4;
+}
+header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    border-bottom: 1px solid;
+    padding-bottom: 1rem;
+}
+section>h2 {
+    margin-top: 2px;
+    border-top: var(--thick-border) solid;
+    width: max-content;
+}
+main {
+    max-width: 1400px;
+    margin: auto;
+}
+.card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(580px, 1fr));
+    grid-gap: 0 2em;
+}
+.card {
+    box-sizing: border-box; /* placeholder because we can't have an empty rule */
+}
+.card>h3 {
+    margin: 0 0 2px 0;
+    border-bottom: var(--thick-border) solid;
+    width: max-content;
+
+}
+dl {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+dl>h3 {
+    margin: 0;
+    grid-column: 1 / -1;
+}
+.code {
+    background-color: var(--color-main);
+    color: white;
+    padding: 8px 8px 8px 1em;
+    white-space: pre-wrap;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: .675rem;
+}
+.code>span {
+    color: wheat;
+}
+.span-all {
+    grid-column: 1 / -1;
+}
+.important {
+    color: red;
+}

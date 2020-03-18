@@ -2,7 +2,7 @@
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: 18px;
     display: grid;
-    --thick-border: 5px;
+    --thick-border: 4px;
     --color-main: #048;
     color: var(--color-main);
     line-height: 1.4;
@@ -59,6 +59,44 @@ dl>h3 {
 .span-all {
     grid-column: 1 / -1;
 }
+.span-all>p {
+    column-width: 580px;
+}
 .important {
     color: red;
+}
+main:focus {
+    background-color:blanchedalmond;
+}
+main:focus>header::after {
+    content:"F2 dup,F4 dupp,F7 del,F8 depp";
+    font-size: x-small;
+    position: fixed;
+    left:0;
+    top:0;
+}
+
+@media print {
+ :root {
+     font-size: 10pt;
+ }   
+ main {
+    max-width: unset;
+}
+.span-all>p {
+    column-width: 380px;
+}
+.card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    grid-gap: 0 2em;
+}
+.code {
+    background-color: #eee;
+    color: unset;
+    border: 1px dotted grey;
+}
+.code>span {
+    color: blueviolet;
+}
 }

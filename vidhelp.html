@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Video Tutorial Helper</title>
+</head>
+<body>
+    <div class="popover">Click to close</div>
+    <div class="popover">Drag to new station</div>
+    <div class="popover"></div>
+    <div class="popover"></div>
+    <div class="popover"></div>
+    <div class="popover"></div>
+    <div class="popover"></div>
+    <div class="popover"></div>
+    <script>
+    var bb = document.querySelectorAll(".popover");
+    bb.forEach((u,i)=>{
+        u.setAttribute("style",
+            `background:rgba(0,0,0,0.75);display:inline-block;position:absolute;border-radius:6px; padding:16px; font-size: 2em; color:white; top:${i*3}em`);
+        u.addEventListener("touchstart", function (e){
+            e.preventDefault();
+            let clone = this.cloneNode(true);
+            bb.lab = window.opener.document.body.appendChild(clone);
+        }, false);
+        u.addEventListener("touchend", function (e){
+            e.preventDefault();
+            let deleted = window.opener.document.body.removeChild(bb.lab);
+            // preserve top/left attributes for next time
+        }, false);
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile First Template</title>
+    <style>
+        :root {
+            font-family: sans-serif;
+        }
+        header {
+                background-color: lavender;
+        }
+        section {
+            background-color: lightblue;
+        }
+        section+section {
+            background-color: lightpink;
+        }
+        footer>div {
+            background-color: darkslategray;
+            color: white
+        }
+        footer>div+div {
+            background-color: darkorchid;
+        }
+        h1, h2, h3, h4, h5, p {
+            margin:0;
+            padding: 0.25rem;
+        }
+        @media (min-width: 760px) {
+            body {
+                display: grid;
+                margin: 0;
+                min-height: 100vh;
+                grid-template-rows: 140px 1fr 1fr 110px;
+            }
+            .grid {
+                display: grid;
+                grid-column: 2 / 4;
+                padding: 0 2em;
+                grid-template-columns: 1fr 33rem 33rem 1fr;
+            }
+            .grid2 {
+                display: grid;
+                grid-column: 1 / -1;
+                display: grid;
+                grid-template-columns: 1fr 33rem 33rem 1fr;
+            }
+            .grid2>* {
+                grid-column: span 2;
+                padding: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="grid">
+        <div>
+            <h1>Application Template</h1>
+            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus voluptates cupiditate numquam magni illum quae earum impedit. Quidem, quas ex?</p>
+        </div>
+    </header>
+    <section class="s1 grid">
+        <div>
+            <h2>Some Section here</h2>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsum voluptates natus dolorum ab cupiditate laborum iusto, aut architecto at minus quas doloremque perferendis consectetur hic maxime excepturi ipsam quam alias quaerat optio cum facere ipsa. Provident nam architecto dolor necessitatibus omnis et, numquam tenetur pariatur repellat voluptate tempora! Qui, earum.</p>
+        </div>
+    </section>
+    <section class="s2 grid">
+        <div">
+            <h2>Some Section here</h2>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsum voluptates natus dolorum ab cupiditate laborum iusto, aut architecto at minus quas doloremque perferendis consectetur hic maxime excepturi ipsam quam alias quaerat optio cum facere ipsa. Provident nam architecto dolor necessitatibus omnis et, numquam tenetur pariatur repellat voluptate tempora! Qui, earum.</p>
+        </div>
+    </section>
+    <footer class="grid2">
+        <div>
+            <div><p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, distinctio facere! Alias sunt voluptatibus numquam qui debitis recusandae laboriosam ratione nostrum autem commodi! Nihil a reiciendis ut fuga praesentium vero officiis adipisci minima!</p></div>
+            <div><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis culpa totam aut at vitae voluptatum, excepturi quos exercitationem quisquam sit sed consectetur minus, iste inventore! Explicabo quaerat dicta id molestias ullam.</p></div>
+        </div>
+    </footer>
+</body>
+</html>

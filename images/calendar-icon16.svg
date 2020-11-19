@@ -22,7 +22,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -37,21 +37,25 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="2400"
-     inkscape:window-height="1271"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
      id="namedview819"
-     showgrid="false"
-     inkscape:zoom="33.6875"
-     inkscape:cx="8"
-     inkscape:cy="6.812616"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
+     showgrid="true"
+     inkscape:zoom="38.897949"
+     inkscape:cx="8.0667946"
+     inkscape:cy="8.0344265"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg817" />
+     inkscape:current-layer="svg817">
+    <inkscape:grid
+       type="xygrid"
+       id="grid9229" />
+  </sodipodi:namedview>
   <path
      style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.29950032;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 5.7544836,7.1948053 H 4.2129458 v 1.541538 h 1.5415378 v -1.541538 m 3.0830761,0 H 7.2960215 v 1.541538 h 1.5415382 v -1.541538 m 3.0830843,0 h -1.541542 v 1.541538 h 1.541542 V 7.1948053 M 13.462182,1.7994228 H 12.691413 V 0.25788498 H 11.149875 V 1.7994228 H 4.9837147 V 0.25788498 H 3.4421769 V 1.7994228 h -0.770769 c -0.8555535,0 -1.5415378,0.6936921 -1.5415378,1.5415379 V 14.131725 a 1.5415378,1.5415378 0 0 0 1.5415378,1.541537 H 13.462182 a 1.5415378,1.5415378 0 0 0 1.541537,-1.541537 V 3.3409607 A 1.5415378,1.5415378 0 0 0 13.462182,1.7994228 m 0,12.3323022 H 2.6714079 V 5.6532674 H 13.462182 Z"
+     d="M 3.5,0.5 V 1.7988281 H 2.25 c -0.8555535,0 -1.3046875,0.4568417 -1.3046875,1.3046875 V 13.75 c 0,0.851367 0.45332,1.021895 1.3046875,1.021897 h 11.65425 c 0.851367,0 1.304688,-0.401905 1.304688,-1.253272 V 3.052099 c 0,-0.8513675 -0.45332,-1.2532709 -1.304688,-1.2532709 H 12.75 V 0.5 h -1.5 V 1.7988281 H 5 V 0.5 Z M 2.25,4.75 H 13.90425 V 13.5 H 2.25 Z M 3.5,6.25 V 8.5 H 5.75 V 6.25 Z m 3.5,0 V 8.5 H 9.25 V 6.25 Z m 3.5,0 V 8.5 h 2.25 V 6.25 Z"
      id="path825"
      inkscape:connector-curvature="0"
-     sodipodi:nodetypes="cccccssccsss" />
+     sodipodi:nodetypes="ccssscssssccccccccccccccccccccccccccc" />
 </svg>

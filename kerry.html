@@ -49,9 +49,7 @@
     </style>
 </head>
 <body>
-    <svg id="barcode"></svg>
     <section class="agrid">
-        <img id="bbc" width="600" height="300"></img>
         <div class="card">
             <h3>card</h3>
         </div>
@@ -86,9 +84,7 @@
     <script nomodule src="ie-grid.js"></script>
     <script>
         var cards = document.querySelectorAll(".card");
-        JsBarcode("#barcode", "Mary O'Keeffe");
         
-        bbc.src = `data:image/svg+xml;base64,${btoa(barcode.outerHTML)}`;
         var places = "sunrise1,sunrise2,sunrise3,muri,sky,motorway,ferns,bg1,wave,bird,heyheymymy".split(",");
         places.forEach(function(place,i){
             if (cards[i]){

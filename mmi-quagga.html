@@ -17,6 +17,9 @@
         label+input:checked+canvas {
             display: inline-block;
         }
+        label[data-tag]::before {
+            content: attr(data-tag)": ";
+        }
         #output>canvas{
             max-width: 70%;
             opacity: 0.65;
@@ -25,12 +28,13 @@
             opacity: 0;
             position: absolute;
             left: 0; top: 0; bottom: 0; right: 0;
+            min-width: 100%;
         }
         label>span {
             display: inline-block;
             padding: 2em;
         }
-        label {
+        label[for="inputFile"] {
             position: relative;
             font-size: 2vw;
             max-width: 30vw;
@@ -54,10 +58,44 @@
             display: flex;
             flex-direction: column;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 4px 8px;
+        }
+        tbody>tr:nth-child(odd) {
+            background-color: rgba(0,0,0,0.1);
+        }
+        th {
+            border-bottom: 2px solid;
+        }
+        td {
+            text-align: right;
+        }
     </style>
 </head>
 <body>
-    <label for="inputFile">
+    <template id="resultsTable">
+        <table>
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Interviewer Code</th>
+                    <th>Student AUID</th>
+                    <th>Station Code</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </template>
+    <template id="resultsTableRow">
+        <tr>
+            <td></td><td></td><td></td><td></td>
+        </tr>
+    </template>
+<label for="inputFile">
         <span>Click to select or drop your tif files here</span>
         <input type="file" id="inputFile" multiple/>
     </label>
@@ -65,26 +103,48 @@
 <div class="main">
     <div id="output"></div>
     <div class="side">
-        <div><label for="l1"></label><input id="l1" type="checkbox"/><canvas id="Canvas1"></canvas></div>
-        <div><label for="l2"></label><input id="l2" type="checkbox"/><canvas id="Canvas2"></canvas></div>
-        <div><label for="l3"></label><input id="l3" type="checkbox"/><canvas id="Canvas3"></canvas></div>
+        <div><label for="l1" data-tag="InterviewerCode"></label><input id="l1" type="checkbox"/><canvas id="Canvas1"></canvas></div>
+        <div><label for="l2" data-tag="StudentAUID"></label><input id="l2" type="checkbox"/><canvas id="Canvas2"></canvas></div>
+        <div><label for="l3" data-tag="StationCode"></label><input id="l3" type="checkbox"/><canvas id="Canvas3"></canvas></div>
     </div>
 </div>
 <script>
-    function processTif(file){
-        
+    var fileQueue = [];
+    var resultQueue = [];
+
+    function allProcessed() {
+        // show results of batch
+        var doutput = document.getElementById("output");
+        doutput.innerHTML = "";
+        doutput.nextElementSibling.innerHTML = "";
+
+        var t = doutput.appendChild(document.importNode(document.getElementById("resultsTable").content, true));
+        t = doutput.lastElementChild;
+        resultQueue.forEach(rec => {
+            t.lastElementChild.appendChild(document.importNode(document.getElementById("resultsTableRow").content, true));
+            let row = t.lastElementChild.lastElementChild;
+            [rec.fileName, ...rec.decoded.map(u=>u.val)].forEach((v,i)=>row.cells[i].textContent = v);
+        });
+        // let r = JSON.stringify(resultQueue);
+        // alert(r);
     }
-    inputFile.onchange = function(e) {
-        e.preventDefault();
+
+    function processTif(){
+        file = fileQueue.shift();
+        if (!file)
+            return allProcessed();
+        resultQueue.unshift({fileName:file.name, decoded:[]});
         var reader = new FileReader();
-        if (inputFile.files[0].name.slice(-4)!=".tif")
-            return alert("TIF Only");
+        if (file.name.slice(-4)!=".tif") {
+            return alert(resultQueue[0].error = "file type error");
+        }
         reader.onloadend = function(u)
         {
             //preview.src = reader.result;
             var tiff = new Tiff({buffer: reader.result});
             var tcanvas = tiff.toCanvas();
             if (tcanvas) {
+                output.innerHTML = "";
                 output.appendChild(tcanvas);
                 let w = tiff.width();
                 let h = tiff.height();
@@ -100,13 +160,19 @@
                     ctx.drawImage(
                         tcanvas, c.x, c.y, c.w, c.h, 0, 0, w/8, h/8
                     );
+                });
                 // get results
                 getResults();
-                });
             }
         };
         // reader.readAsDataURL(inputFile.files[0]);
-        reader.readAsArrayBuffer(inputFile.files[0]);
+        reader.readAsArrayBuffer(file);
+    }
+
+    inputFile.onchange = function(e) {
+        e.preventDefault();
+        fileQueue.push(...inputFile.files);
+        processTif();
     }
 
     function singleAsPromise(canv) {
@@ -132,65 +198,15 @@
         var r = await waitForDecode(canvas);
         var h = canvas.previousElementSibling.previousElementSibling;
         h.textContent = r.codeResult&&r.codeResult.code||"not detected";
+        return {tag:h.dataset.tag, val:h.textContent};
     }
 
     async function getResults() {
-        await barcodeRead(Canvas1);
-        await barcodeRead(Canvas2);
-        await barcodeRead(Canvas3);
+        resultQueue[0].decoded.push( await barcodeRead(Canvas1));
+        resultQueue[0].decoded.push( await barcodeRead(Canvas2));
+        resultQueue[0].decoded.push( await barcodeRead(Canvas3));
+        processTif(); // do next one if any
     }
-  /*
-    function getResults(){
-        // can we get the barcodes yet?
-        Quagga.decodeSingle({
-            decoder: {
-                readers: ["code_39_reader"] // List of active readers
-            },
-            locate: true, // try to locate the barcode in the image
-            src: Canvas1.toDataURL()
-        }, function(result){
-            var hh = Canvas1.previousElementSibling;
-            if(result.codeResult) {
-                hh.textContent = result.codeResult.code;
-            } else {
-                hh.textContent = "not detected";
-            }
-            Quagga.decodeSingle({
-                decoder: {
-                    readers: ["code_39_reader"], // List of active readers
-                    multiple: false
-                },
-                locate: true, // try to locate the barcode in the image
-                locator: {
-                    halfSample: true,
-                    patchSize: "large"
-                },
-                src: Canvas2.toDataURL()
-            }, function(result){
-                var hh = Canvas2.previousElementSibling;
-                if(result.codeResult) {
-                    hh.textContent = result.codeResult.code;
-                } else {
-                    hh.textContent = "not detected";
-                }
-                Quagga.decodeSingle({
-                    decoder: {
-                        readers: ["code_39_reader"] // List of active readers
-                    },
-                    locate: true, // try to locate the barcode in the image
-                    src: Canvas3.toDataURL()
-                }, function(result){
-                    var hh = Canvas3.previousElementSibling;
-                    if(result.codeResult) {
-                        hh.textContent = result.codeResult.code;
-                    } else {
-                        hh.textContent = "not detected";
-                    }
-                });                
-            });                
-        });                
-
-    }*/
 </script>
 </body>
 </html>

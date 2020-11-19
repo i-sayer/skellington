@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/jsbarcode/3.6.0/barcodes/JsBarcode.code128.min.js"></script>
+    <title>Grid4U</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font: 1em sans-serif;
+            margin: 12px;
+        }
+        .card>h3 {
+            margin: 0;
+            padding: 6px;
+            background-color: rgba(0,128,167,0.6);
+            color: whitesmoke;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .card>img {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 3.5em;
+        }
+        .agrid {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-rows: auto;
+            grid-gap: 12px;
+        }
+        .card {
+            min-height: calc(280px + 2em);
+            border: 1px solid;
+            box-shadow: 0px 6px 12px -4px rgba(0,0,0,0.6);
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center center;
+            position: relative;
+        }
+        @media print {
+            .agrid {
+                display: block;
+            }
+            .card {
+                break-inside: avoid;
+                width: 30%;
+                display: inline-block;
+                margin: 1em;
+            }
+        }
+        .fullscreen {
+            position: fixed;
+            left: 20vw;
+            right: 20vw;
+            top: 20vh;
+            bottom: 20vh;
+            background-size: contain;
+            background-color: rgba(255,255,255,0.925);
+            z-index: 1;
+        }
+        #barcode {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <svg id="barcode"></svg>
+    <section id="wrapper" class="agrid">
+        <template id="card_template">
+        <div class="card">
+            <h3>card</h3>
+            <img />
+        </div>
+        </template>
+    </section>
+    <script nomodule src="ie-grid.js"></script>
+    <script>
+        
+        
+        var photos = [  "FFA201","FFA701","FFA702","FMA301","FMA302","FMA401","FMA402","FMA501","FMA502","FMA601","FMA701",
+            "FMA801","MAIG01","MAIM01","MANU01","MBAM01","MBAO01","MBAO02","MBIM01","MBIO01","MBIO02","MFLR01","MHNA01",
+            "MHNA02","MHWS02","MHWT01","MHWT02","MIIM01","MIIO01","MILM01","MILO01","MINM01","MINO01","MLAT01-A",
+            "MLAT01-D","MLAT01-M","MLCL01","MLCL02","MLCL03","MLCL04","MLFC01"];
+        photos.forEach(function(photo,i){
+            let docfrag = document.importNode(card_template.content, true);
+            JsBarcode("#barcode", photo, {displayValue:false});
+            els = docfrag.querySelectorAll("div,h3,img");
+            els[1].textContent = photo;
+            els[0].setAttribute("style","background-image: url(images/JPEG/"+photo+".jpg");
+            els[0].onclick = function (e){this.classList.toggle("fullscreen")};
+            els[2].src = `data:image/svg+xml;base64,${btoa(barcode.outerHTML)}`;
+            wrapper.appendChild(docfrag);
+        });
+    </script>
+    </body>
+</html>

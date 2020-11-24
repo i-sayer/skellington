@@ -97,7 +97,7 @@
         </audio>
         <div id="tracks"></div>
     </section>
-    <script src="playlist.js"></script>
+    <!-- <script src="playlist.js"></script> -->
     <script type="module">
         function playNext(e){
             if (!justplayed)
@@ -145,13 +145,18 @@
                     bands[i].wd = Math.ceil((bands[i].fr-bands[i-1].fr)*2.5/bandgap);
             }
         }
-        files.forEach(u=>{
-            let link = document.createElement("a");
-            link.textContent = u.slice(0, -4);
-            link.href = "mp3/"+u;
-            tracks.appendChild(link);
-            //link.setAttribute("crossorigin", "use-credentials");
-            link.onclick = clicklink;
+        fetch("https://api.github.com/repos/i-sayer/skellington/contents/mp3", { method: "GET", credentials: "omit"})
+        .then(function (response){
+            return response.json();
+        }).then(function (files){
+            files.map(u=>u.name).forEach(u=>{
+                let link = document.createElement("a");
+                link.textContent = u.slice(0, -4);
+                link.href = "mp3/"+u;
+                tracks.appendChild(link);
+                //link.setAttribute("crossorigin", "use-credentials");
+                link.onclick = clicklink;
+            });
         });
         const sdc = document.getElementById("spectrumDisplay");
         const ctx=sdc.getContext("2d");

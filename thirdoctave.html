@@ -154,7 +154,7 @@
         .then(function (response){
             return response.json();
         }).then(function (files){
-            files.map(u=>u.name).forEach(u=>{
+            files.map(u=>u.name).sort().forEach(u=>{
                 let link = document.createElement("a");
                 link.textContent = u.slice(0, -4);
                 link.href = "mp3/"+u;

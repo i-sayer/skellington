@@ -104,7 +104,7 @@
                 return;
             let next = justplayed.nextElementSibling;
             if (!next)
-                justplayed = next = document.querySelector("#tracks>a:first-child");
+                next = document.querySelector("#tracks>a:first-child");
             next.click();
             next.focus();
         }
@@ -119,9 +119,14 @@
                 player.addEventListener("ended", playNext, false);
                 draw();
             }
-            justplayed = this;
-            player.src = this.href;
-            player.play();
+            if (this.href == player.src) {
+                player.src = "";
+                justplayed = undefined;
+            } else {
+                justplayed = this;
+                player.src = this.href;
+                player.play();
+            }
         }
         var audioCtx, analyser, audio, dataArray, justplayed, bands = [];
         function initwebaudio(){

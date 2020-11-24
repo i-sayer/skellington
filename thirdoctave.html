@@ -100,12 +100,11 @@
     <script src="playlist.js"></script>
     <script type="module">
         function playNext(e){
-            let justplayed = document.querySelector("#tracks>a:focus");
             if (!justplayed)
                 return;
             let next = justplayed.nextElementSibling;
             if (!next)
-                return;
+                justplayed = next = document.querySelector("#tracks>a:first-child");
             next.click();
             next.focus();
         }
@@ -120,10 +119,11 @@
                 player.addEventListener("ended", playNext, false);
                 draw();
             }
+            justplayed = this;
             player.src = this.href;
             player.play();
         }
-        var audioCtx, analyser, audio, dataArray, bands = [];
+        var audioCtx, analyser, audio, dataArray, justplayed, bands = [];
         function initwebaudio(){
             let fftsize = 4096, samplerate, startfreqhz = 16;
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();

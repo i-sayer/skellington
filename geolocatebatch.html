@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geotest</title>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByx0SQ4h0_11-WCzZTjNnvr1nvKtlUcCw"></script>
+</head>
+<body>
+    <h1>Geo Test</h1>
+    <script>
+        const geocoder = new google.maps.Geocoder();
+        const todecode = [{auid:735627303, addr1:"35 Ridings Road"},{auid:260723864, addr1:"873 Manukau Road"},{auid:705002198, addr1:"24 Ormond drive silverdale 0932"},{auid:669847010, addr1:"138 Anzac Ave, Auckland Central"},{auid:310906643, addr1:"915/85 Wakefield St"},{auid:749864363, addr1:"10A Carlton Gore Road"},{auid:749439303, addr1:"3 Attymon Lane, East Tamaki"},{auid:4501734, addr1:"2 Jean Alma Lane, Wattle Downs, Auckland, 2103"},{auid:863690942, addr1:"6 Birch Place, Otara 2023"},{auid:5515855, addr1:"1a Hakanoa Street, Grey Lynn 1021"},{auid:939402872, addr1:"1308/19 Anzac Avenue, Auckland Central, 1010"},{auid:709352312, addr1:"3 Observation Green, Hobsonville, Auckland 0618"},{auid:630794273, addr1:"81b Victoria street onehunga"},{auid:422687588, addr1:"19-26 Nicholls lane, Parnell, Auckland "},{auid:900658651, addr1:"1/16 Ayr Street"},{auid:157922566, addr1:"19 Nicholls Lane, Parnell"},{auid:5303959, addr1:"4/30 Norwich Street, Eden Terrace"},{auid:783053548, addr1:"52b Carlton Gore road, Grafton, Auckland."},{auid:722961323, addr1:"4/253 Balmoral Road, Sandringham, Auckland"},{auid:913947204, addr1:"128 Anzac Avenue, Auckland Central, 1010"},{auid:786220196, addr1:"70 Tiger Drive, Golflands, Auckland 2013"},{auid:968563333, addr1:"52 St Andrews Road "},{auid:618969392, addr1:"154 Balmoral Road, Mount Eden, Auckland 1024"},{auid:1839393, addr1:"25 kerswill place, pakuranga"},{auid:209345626, addr1:"68 Sunset Road"},{auid:863417268, addr1:"18 Vagus Place, Royal Oak, Auckland, 1023"},{auid:232251783, addr1:"463A Beach Road, Murrays Bay, Auckland"},{auid:452631235, addr1:"16 Bongard Road, Mission Bay, 1071"},{auid:4920365, addr1:"1a/16 Viewland Avenue, Onehunga"},{auid:9396785, addr1:"411 Great North Road"},{auid:397444233, addr1:"65A Te Kawa Road, Greenlane"},{auid:1624413, addr1:"3 De Val Drive, Titirangi, Auckland 0604"},{auid:1316381, addr1:"106 Wheturangi Road, Greenlane"},{auid:381749964, addr1:"16a Chablis Place, Henderson, Auckland"},{auid:755407177, addr1:"13a Billabong Place, Botany Downs, Auckland"},{auid:432550171, addr1:"207 Federal street "},{auid:982112104, addr1:"Whitaker Place, Grafton 1010"},{auid:695413734, addr1:"29/852 Mount Eden Road, Three Kings, Auckland"},{auid:728117975, addr1:"69B Kowhai Road Mairangi Bay Auckland "},{auid:335094143, addr1:"111 Galway Street, Onehunga, Auckland"},{auid:819707217, addr1:"6E/8 Bankside street"},{auid:356992380, addr1:"10A Carlton Gore Road, Grafton"},{auid:525246945, addr1:"81A Dale Crescent Pakuranga"},{auid:473370193, addr1:"13 Brains Road"},{auid:834423159, addr1:"18 Munstead Place, Hillcrest"},{auid:426592412, addr1:"4 Kerry Dell, Cockle Bay"},{auid:248954539, addr1:"27 Aldred rd "},{auid:792429164, addr1:"1/9 Herd Road, Hillsborough"},{auid:509276167, addr1:"Shop 6/1784 Great North Road, Avondale, Auckland 1026."},{auid:918547722, addr1:"30 Wattle Street, New Lynn "}];
+        const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+        function getGeoPromise(address)
+		{
+            return new Promise(function (resolve, reject){
+                let ad = address.split(",");
+                if (ad.length==1)
+                    ad.push(" NZ");
+                ad = ad.join(",");
+                geocoder.geocode( { 'address': ad}, function(results, status) {
+                    if (status == google.maps.GeocoderStatus.OK)
+                    {
+                        resolve(results[0]);
+                    } else {
+                        reject(google.maps.GeocoderStatus);
+                    }
+                });
+            })
+		}
+        async function getGeo(address){
+            const info = await getGeoPromise(address);
+            return info;
+        }
+
+		// function getGeo(address)
+		// {
+		// 	geocoder.geocode( { 'address': address}, function(results, status) {
+		// 		if (status == google.maps.GeocoderStatus.OK)
+		// 		{
+        //             console.log(`${results[0].geometry.location.lat()},results[0].geometry.location.lng()`)
+		// 		}
+		// 	});
+		// }
+        const decoded = [];
+        async function getabatch(b){
+            let i=0, a = undefined;
+            while(a=b[i++]){
+                const u=await getGeo(a.addr1);
+                a.lat=u.geometry.location.lat();
+                a.lng=u.geometry.location.lng();
+                a.addr2=u.formatted_address;
+                decoded.push(a);
+                console.log(`${u.geometry.location.lat()},${u.geometry.location.lng()}`);
+                await delay(6000);
+            }
+            console.log("DONE!");
+        }
+        while (todecode.length) {
+            let batch = todecode.splice(0, 10);
+            getabatch(batch);
+        }
+//// b=a.map(u=>`{auid:${u[0]}, addr1:"${u[1]}"}`)
+//// SELECT gpdb.studentmaster.auid,address FROM gpdb.studentyear join gpdb.studentmaster using(auid) where year=2 and calendaryear=2021 and address is not null limit 10 offset 20;
+//// final mysql use insert (auid,lat,lng) values (xxxx,lat,lng)... ON duplicate key update lat=values(lat), lng=values(lng)
+    </script>
+</body>
+</html>

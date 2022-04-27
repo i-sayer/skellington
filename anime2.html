@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midi Animation</title>
+    <style>
+        body, html {
+            box-sizing: border-box;
+            display: flex;
+            padding: 0;
+            margin:  0;
+            background-color: red;
+            position: relative;
+        }
+        body.pulse {
+            animation: pulse-bg 250ms linear;
+        }
+        .canv {
+            height:100vh;
+            width:40vw;
+            background-image: repeating-linear-gradient(transparent, transparent 5vh, black 5vh, black 15vh);
+            background-size: 100% 15vh;
+            background-position-y: 0vw;
+            /* transform: rotate(180deg); */
+            animation: side-stripes 500ms steps(3, end)  infinite;
+        }
+        .spacer {
+            width: 20vw;
+            background-color: #000;
+        }
+        video {
+            position: absolute;
+            left:0; right:0; top:0; bottom:0;
+            width: 100vw;
+            height: 100vh;
+            opacity: 0.5;
+            /* filter:invert(); */
+            filter:hue-rotate(90deg) invert();
+        }
+        @keyframes side-stripes {
+            to {
+                background-position-y: 30vh;
+            }
+        }
+        @keyframes pulse-bg {
+            from {background-color: yellow;}
+            to {background-color: red;}
+        }
+    </style>
+</head>
+<body>
+    <div class="canv"></div>
+    <div class="spacer"><video id="video1" autoplay></video></div>
+    <div class="canv"></div>
+    <script>
+        const constraints = {video: true};
+        var midi = null, mididev=0, clkcount=0;
+        //navigator.mediaDevices.getUserMedia(constraints).then(stream => {video1.srcObject = stream});
+        function onMIDISuccess(midiAccess) {
+            let txt = "";
+            midi = midiAccess;  // store in the global (in real usage, would probably keep in an object instance)
+            midiAccess.inputs.forEach(function (entry) { entry.onmidimessage = onMIDIMessage; });
+            initSynth();
+        }
+
+        function onMIDIMessage(event){
+            let cmd = event.data[0] >> 4;
+            switch (cmd){
+                case 0xf:
+                    break;
+                case 9:
+                    // console.log(`${event.data[0].toString(16)} ${event.data[1]} ${event.data[2]}`);
+                    if (event.data[1]==60){
+                        document.body.classList.add("pulse");
+                        document.body.onanimationend = e => document.body.classList.remove("pulse");
+                    }
+            }
+        }
+        navigator.requestMIDIAccess({ sysex: true }).then(onMIDISuccess, u=>consolelog("midi failed"));
+    </script>
+</body>
+</html>

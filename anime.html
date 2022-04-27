@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Midi Animation</title>
+    <style>
+        body, html {
+            box-sizing: border-box;
+            padding: 0;
+            margin:  0;
+            background-color: red;
+            animation: pulse-bg 1600ms ease-in-out infinite;
+        }
+        .canv {
+            height:100vh;
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 5vw, black 5vw, black 15vw);
+            background-size: 15vw 100vh;
+            background-position-x: 0vw;
+            transform: rotate(180deg);
+            animation: side-stripes 800ms steps(3, end)  infinite;
+        }
+        @keyframes side-stripes {
+            to {
+                background-position-x: 30vw;
+            }
+        }
+        @keyframes pulse-bg {
+            from {background-color: yellow;}
+            30% {background-color: red;}
+            90% {background-color: red;}
+            to {background-color: yellow;}
+        }
+    </style>
+</head>
+<body>
+    <div class="canv"></div>
+</body>
+</html>

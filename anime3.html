@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Going for the old tv between channels look">
+    <title>Midi Animation</title>
+    <style>
+        body, html {
+            box-sizing: border-box;
+            display: flex;
+            padding: 0;
+            margin:  0;
+            background-color: black;
+            position: relative;
+        }
+        video {
+            position: absolute;
+            left:0; right:0; top:0; bottom:0;
+            width: 100vw;
+            height: 100vh;
+            opacity: 0.5;
+            /* filter:invert(); */
+            filter:hue-rotate(90deg) invert();
+        }
+        canvas {
+            border-radius: 8px;
+            position: relative;
+        }
+        div{
+            transform: translate(400px, 400px) scale(2.5);
+            position: relative;
+            filter: contrast(125%);
+            -webkit-box-reflect: right 20px;
+        }
+        /* div::after {
+            content:"";
+            position: absolute;
+            display: block;
+            left: 0;
+            right: 0;
+            top:0;
+            bottom:0;
+            background: radial-gradient(transparent 30%, rgba(0,0,0,0.5));
+        } */
+    </style>
+</head>
+<body>
+    <div>
+        <canvas id="oldTV" width="320" height="240"></canvas>
+    </div>
+    <script>
+        const ctx = oldTV.getContext('2d');
+        const w = oldTV.width;
+        const h = oldTV.height;
+        const h3 = oldTV.height/2;
+        ctx.rect(0,0,w,h);
+        ctx.fill();
+        let pixdata = ctx.getImageData(0,0,w,h);
+        let data = pixdata.data;
+        let tvNoise = function(){
+            for (let j=0; j<h3; j++){
+                let v = j * 2 * w * 4;
+                for (let i=0; i<w; i++){
+                    let rnd = Math.floor(Math.random()*255);
+                    data[v+(i*4)] = rnd;
+                    data[v+(i*4+1)] = rnd;
+                    data[v+(i*4+2)] = rnd;
+                }
+            }
+            ctx.putImageData(pixdata, 0, 0);
+            window.requestAnimationFrame(tvNoise);
+        }
+        window.requestAnimationFrame(tvNoise);
+        const constraints = {video: true};
+        var midi = null, mididev=0, clkcount=0;
+        // navigator.mediaDevices.getUserMedia(constraints).then(stream => {video1.srcObject = stream});
+        // function onMIDISuccess(midiAccess) {
+        //     let txt = "";
+        //     midi = midiAccess;  // store in the global (in real usage, would probably keep in an object instance)
+        //     midiAccess.inputs.forEach(function (entry) { entry.onmidimessage = onMIDIMessage; });
+        //     initSynth();
+        // }
+
+        // function onMIDIMessage(event){
+        //     let cmd = event.data[0] >> 4;
+        //     switch (cmd){
+        //         case 0xf:
+        //             break;
+        //         case 9:
+        //             // console.log(`${event.data[0].toString(16)} ${event.data[1]} ${event.data[2]}`);
+        //             if (event.data[1]==60){
+        //                 document.body.classList.add("pulse");
+        //                 document.body.onanimationend = e => document.body.classList.remove("pulse");
+        //             }
+        //     }
+        // }
+        // navigator.requestMIDIAccess({ sysex: true }).then(onMIDISuccess, u=>consolelog("midi failed"));
+    </script>
+</body>
+</html>

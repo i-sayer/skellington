@@ -57,7 +57,7 @@
     <script>
         const constraints = {video: true};
         var midi = null, mididev=0, clkcount=0;
-        //navigator.mediaDevices.getUserMedia(constraints).then(stream => {video1.srcObject = stream});
+        navigator.mediaDevices.getUserMedia(constraints).then(stream => {video1.srcObject = stream});
         function onMIDISuccess(midiAccess) {
             let txt = "";
             midi = midiAccess;  // store in the global (in real usage, would probably keep in an object instance)

@@ -27,14 +27,22 @@
         canvas {
             border-radius: 8px;
             position: relative;
+            margin: 0 10px;
         }
+        /* div>canvas{
+            filter: grayscale(1);
+        }
+        div>canvas:nth-child(2){
+            filter: grayscale(0);
+        } */
         div{
-            transform: translate(400px, 400px) scale(2.5);
+            transform: translate(460px, 160px) scale(1.6);
+            /* animation: movetv 9s ease-in-out infinite alternate; */
             position: relative;
             filter: contrast(125%);
-            -webkit-box-reflect: right 20px;
+            -webkit-box-reflect: below 10px;
         }
-        /* div::after {
+        div::after {
             content:"";
             position: absolute;
             display: block;
@@ -43,12 +51,22 @@
             top:0;
             bottom:0;
             background: radial-gradient(transparent 30%, rgba(0,0,0,0.5));
-        } */
+        }
+        @keyframes movetv {
+            from {
+            transform: translate(460px, 160px) scale(1.6) rotate(-0.5deg);
+        }
+        to {
+            transform: translate(460px, 160px) scale(1.65) rotate(0.5deg);
+            }
+        }
     </style>
 </head>
 <body>
     <div>
-        <canvas id="oldTV" width="320" height="240"></canvas>
+        <canvas class="oldTV" id="oldTV" width="320" height="240"></canvas>
+        <canvas class="oldTV" width="320" height="240"></canvas>
+        <canvas class="oldTV" width="320" height="240"></canvas>
     </div>
     <script>
         const ctx = oldTV.getContext('2d');
@@ -59,7 +77,12 @@
         ctx.fill();
         let pixdata = ctx.getImageData(0,0,w,h);
         let data = pixdata.data;
+        let frame = 0;
+        let ctxarray = Array.from(document.querySelectorAll(".oldTV"), u=>u.getContext('2d'));
         let tvNoise = function(){
+            frame++;
+            if (frame % 3)
+                return window.requestAnimationFrame(tvNoise);
             for (let j=0; j<h3; j++){
                 let v = j * 2 * w * 4;
                 for (let i=0; i<w; i++){
@@ -67,9 +90,11 @@
                     data[v+(i*4)] = rnd;
                     data[v+(i*4+1)] = rnd;
                     data[v+(i*4+2)] = rnd;
+                    data[v+(i*4+3)] = rnd;
                 }
             }
-            ctx.putImageData(pixdata, 0, 0);
+            ctxarray.forEach(u=>u.putImageData(pixdata, 0, 0));
+            // ctx.putImageData(pixdata, 0, 0);
             window.requestAnimationFrame(tvNoise);
         }
         window.requestAnimationFrame(tvNoise);

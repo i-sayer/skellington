@@ -26,30 +26,29 @@
             display: grid;
             box-sizing: border-box;
             grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 0;
+            gap: 14px;
         }
         #twelve>div {
             /* outline: 1px solid black; */
-            height:33.33vh;
+            height: calc(33.33vh - 14px);
+            width: 96%;
             position: relative;
             /* filter: blur(0.5px); */
-        }
-        #twelve>div>svg {
-            position: absolute;
-            left:0;
-            top:0;
         }
         #twelve>div>canvas {
             position: absolute;
             left:0;
             top:0;
-            transform: translate(50%,50%) scale(1.99);
-            filter: grayscale(1) brightness(7);
+            transform: translate(50%,50%) scale(2,2);
+            filter: grayscale(1) brightness(9);
+            mix-blend-mode: lighten;
+            border-radius: 50% 50% 40% 40% / 4% 4% 4% 4% ;
         }
         #twelve>div {
             background: repeating-linear-gradient(transparent, transparent 50%,rgba(255,255,255,0.3) 99%);
             background-size: 100% 90%;
             animation: roll1 cubic-bezier(0.68, -0.6, 0.32, 1.6) infinite alternate forwards;
+            border-radius: 50% 50% 40% 40% / 4% 4% 4% 4% ;
         }
         @keyframes roll1 {
             from {
@@ -57,55 +56,14 @@
             }
             to {
                 background-position-y: 33vh;
-
             }
         }
     </style>
 </head>
 <body>
-    <svg style="display:none">
-        <symbol id="mask">
-            <path d="M 0,0 V 96.559311 H 144.23753 V 0 Z m 6.7540187,3.7197245 c 43.5764983,-1.059478 87.1529963,-0.8700264 130.7295013,0 1.06245,0.021213 1.87297,0.8560651 1.91827,1.9177565 1.22792,28.77895 1.47415,57.27742 0,85.284349 -0.0559,1.06119 -0.85651,1.874765 -1.91827,1.918272 -43.35444,1.776504 -86.990342,1.301292 -130.7295013,0 -1.0621875,-0.0316 -1.8700721,-0.856707 -1.9182738,-1.918272 -1.2908148,-28.428115 -1.4147938,-56.856234 0,-85.284349 0.052821,-1.0613439 0.8556164,-1.9177567 1.9182738,-1.9177565 z">
-            </path>
-        </symbol>
-    </svg>
     <section id="twelve">
-        <div>
-            <svg viewBox="0 0 144.19531 96.53125" preserveAspectRatio="none" width="100%" height="100%"><use xlink:href="#mask"></use></svg>
-        </div>
-        <div>
-            <svg viewBox="0 0 144.19531 96.53125" preserveAspectRatio="none" width="100%" height="100%"><use xlink:href="#mask"></use></svg>
-        </div>
-        <div>
-            <svg viewBox="0 0 144.19531 96.53125" preserveAspectRatio="none" width="100%" height="100%"><use xlink:href="#mask"></use></svg>
-        </div>
-        <div>
-            <svg viewBox="0 0 144.19531 96.53125" preserveAspectRatio="none" width="100%" height="100%"><use xlink:href="#mask"></use></svg>
-        </div>
-        <div>
-            <svg viewBox="0 0 144.19531 96.53125" preserveAspectRatio="none" width="100%" height="100%"><use xlink:href="#mask"></use></svg>
-        </div>
-        <div>
-            <svg viewBox="0 0 144.19531 96.53125" preserveAspectRatio="none" width="100%" height="100%"><use xlink:href="#mask"></use></svg>
-        </div>
-        <div>
-            <svg viewBox="0 0 144.19531 96.53125" preserveAspectRatio="none" width="100%" height="100%"><use xlink:href="#mask"></use></svg>
-        </div>
-        <div>
-            <svg viewBox="0 0 144.19531 96.53125" preserveAspectRatio="none" width="100%" height="100%"><use xlink:href="#mask"></use></svg>
-        </div>
-        <div>
-            <svg viewBox="0 0 144.19531 96.53125" preserveAspectRatio="none" width="100%" height="100%"><use xlink:href="#mask"></use></svg>
-        </div>
-        <div>
-            <svg viewBox="0 0 144.19531 96.53125" preserveAspectRatio="none" width="100%" height="100%"><use xlink:href="#mask"></use></svg>
-        </div>
-        <div>
-            <svg viewBox="0 0 144.19531 96.53125" preserveAspectRatio="none" width="100%" height="100%"><use xlink:href="#mask"></use></svg>
-        </div>
-        <div>
-            <svg viewBox="0 0 144.19531 96.53125" preserveAspectRatio="none" width="100%" height="100%"><use xlink:href="#mask"></use></svg>
-        </div>
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div>
     </section>
     <script>
         // put a canvas element in each div
@@ -121,11 +79,11 @@
             let can = document.createElement("canvas");
             can.setAttribute("width",hw);
             can.setAttribute("height",hh);
-            let _svg = div.removeChild(div.firstElementChild);
+            // let _svg = div.removeChild(div.firstElementChild);
             div.style.animationDuration = rollspeed;
             // can.style.filter = `contrast(${40+Math.floor(Math.random()*60)}%)`;
             div.appendChild(can);
-            div.appendChild(_svg);
+            // div.appendChild(_svg);
             let _ctx = can.getContext("2d");
             if (i>0)
                 slaves.push(_ctx);

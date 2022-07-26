@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPFilter</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Candara, "Bitstream Vera Sans", "DejaVu Sans", "Bitstream Vera Sans", "Trebuchet MS", Verdana, "Verdana Ref", sans-serif;
+        }
+        /* dialog {
+            display: block;
+        } */
+        dialog>h3::first-letter {
+            font-size: 1.7em;
+            font-weight: normal;
+            vertical-align: sub;
+        }
+        dialog>p {
+            max-width: 280px;
+        }
+        .chk {
+            cursor: pointer;
+            user-select: none;
+        }
+        .chk.on::before {
+            content:"☑ ";
+        }
+        .chk::before {
+            content:"☐ ";
+            font-size: 1.7em;
+            vertical-align: sub;
+        }
+        .chk:focus {
+            outline: 1px dotted;
+        }
+        button {
+            width: 9em;
+            position: relative;
+            display: block;
+        }
+        button.M::before {
+            content: '◤';
+            position: absolute;
+            left: -2px;
+            top: -5px;
+            color: red;
+        }
+        button.P::after {
+            content: '◢';
+            position: absolute;
+            right: -2px;
+            bottom: -5px;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <dialog open id="filterDialog">
+        <h3>▨ Filter practice list by:</h3>
+        <div tabindex="0" data-bit="2" class="chk">Māori led</div>
+        <div tabindex="0" data-bit="3" class="chk">Majority Māori service users</div>
+        <div tabindex="0" data-bit="4" class="chk">Pacific led</div>
+        <div tabindex="0" data-bit="5" class="chk">Majority Pacific service users</div>
+        <div tabindex="0" data-bit="0" class="chk">Hauora Māori</div>
+        <div tabindex="0" data-bit="1" class="chk">Rural practice</div>
+        <hr/>
+        <button id="filterNow">Filter now</button>
+        <hr/>
+        <h2>Key</h2>
+        <p>The practice list id buttons indicate Māori/Pacific led <em>or</em> majority service users as follows.</p>
+        <button class="M">Māori</button>
+        <button class="P">Pacific</button>
+        <button class="M P">Both</button>
+    </dialog>
+    <script>
+        const getBitWeight = function (group){
+            let w = 0;
+            for (let c,i=0; c=group[i]; i++ )
+                if (c.classList.contains("on"))
+                    w += (Math.pow(2, c.dataset.bit));
+            return w;
+        }
+        const setBits =function(group, long){
+            for (let c,i=0; c=group[i]; i++ ){
+                if (long & Math.pow(2, c.dataset.bit))
+                    c.classList.add("on");
+                else
+                    c.classList.remove("on");
+            }
+        }
+        let ourchecks = document.querySelectorAll("dialog>.chk");
+        let copy = document.createElement("div");
+        const toggleon = function (e){
+            let keyname = e.code;
+            if (keyname && keyname != "Space")
+                return;
+            e.target.classList.toggle("on");
+        }
+        for (var c,i=0; c=ourchecks[i]; i++){
+            // c.addEventListener("click", toggleon);
+            let clone = c.cloneNode(true);
+            c.onclick = clone.onclick = c.onkeypress = clone.onkeypress = toggleon;
+            copy.appendChild(clone);                                    
+        }
+        setBits(copy.children, 13);
+        document.body.appendChild(copy);
+        filterNow.onclick = (e)=>{ alert(getBitWeight(ourchecks)); filterDialog.close()};
+
+    </script>
+</body>
+</html>

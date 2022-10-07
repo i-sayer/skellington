@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Animated Checkbox</title>
     <style>
+        /* iOS rendering issues
+                Checkbox animation is positioned 2-3px too far right
+                Box shadow doesnt seem to work on input text element.
+        */
         :root {
             --text-color: #222;
             font-family: Arial, Helvetica, sans-serif;
@@ -58,7 +62,7 @@
             box-shadow: 0 0 3px 2px var(--text-color) !important;
         }
         label:has(input[type="checkbox"]:checked)::after {
-            transition-duration: 200ms;
+            transition-duration: 150ms;
             background-position: 0px;
         }
         label:has(input[type="checkbox"])::after {
@@ -73,7 +77,7 @@
             border-radius: 4px;
             background: linear-gradient(45deg,var(--text-color) 50%, transparent 50%);
             background-size: 2.5em 1em;
-            background-position: -1.25em;
+            background-position: -1.5em;
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;

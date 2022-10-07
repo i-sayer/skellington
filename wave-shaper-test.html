@@ -4,41 +4,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animation delay test</title>
+    <title>Test Wave Gen</title>
     <style>
         :root {
             font-family: sans-serif;
-            background-color: blanchedalmond;
+            background: radial-gradient(#444, #111);
             font-size: 12px;
         }
         heading {
-            color: blanchedalmond;/* orange;*/
+            color: orange;
             font-weight: 700;
             font-size: 3em;
-        }
-        #z {
-            color: inherit;
-            margin: 0 1em;
-            vertical-align: super;
-            text-shadow: -0.35em 0.325em 0, 0.35em -0.325em 0;
-        }
-        th {
-            white-space: pre;
-            vertical-align: bottom;
-            background-color: rgba(0,0,0,0.25);
-        }
-        .mcv>th {
-            padding: 4px;
-            min-width: 3ch;
-        }
-        th:empty, td:empty {
-            background-color: rgba(0,0,0,0.125);
-        }
-        .mcv>th:nth-child(n+8):nth-child(-n+21), .mcv>th:nth-child(n+29){
-            writing-mode: vertical-rl;
-            transform: rotate(180deg); 
-            text-align: left;
-            vertical-align: middle;
         }
         heading>small {
             float: right;
@@ -66,10 +42,37 @@
                 7.5px 3.5px 0,
                 10px 11px 0;
         }
+        progress {
+            width:320px;
+        }
+        .punched-metal {
+            margin: 0;
+            --dot-color: black;
+            --dot-diam: 16%;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 0%, var(--dot-color) var(--dot-diam), transparent calc(var(--dot-diam) + 1px)),
+            radial-gradient(circle at 50% 100%, var(--dot-color) var(--dot-diam), transparent calc(var(--dot-diam) + 1px)),
+            radial-gradient(circle at 0% 50%, var(--dot-color) var(--dot-diam), transparent   calc(var(--dot-diam) + 1px)),
+            radial-gradient(circle at 100% 50%, var(--dot-color) var(--dot-diam), transparent calc(var(--dot-diam) + 1px));
+            background-size: 10px 10px;
+            background-repeat: repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        h1 {
+            color: white;
+            font-size: 4em;
+            max-width: 700px;
+            text-align: center;
+            text-shadow: 4px 4px 3px black;
+        }
     </style>
 </head>
-<body>
-    <heading><span id="z">z</span>Expert Sleepers <span class="midi"></span><small>FH-2 Configurator</small></head>
+<body class="punched-metal">
+    <!-- <heading><span class="midi"></span><small>MIDI LFO</small></heading>
+    <progress id="out1" value="64" max="127" /> -->
+    <h1>There is no shadow dom on the dark web</h1>
 <script>
     let wwrap = function(v, th){
         let reciprocal = 1 / th;
@@ -84,7 +87,7 @@
         phasor.push(i);
         ramp.push(wwrap(i,0.75));
     }
-    debugger;
+    //debugger;
 </script>   
 </body>
 </html>

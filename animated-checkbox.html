@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Playground for forms">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Checkbox</title>
+    <style>
+        :root {
+            --text-color: #222;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 22px;
+        }
+        body {
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+        form {
+            flex-shrink: 1;
+            flex-basis: 1024px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 360px);
+            border: 1px dashed;
+            justify-content: space-evenly;
+            gap: 1em;
+        }
+        /* input:not([type="checkbox"]){
+            min-width: 320px;
+        } */
+        label {
+            text-align: right;
+            max-width: 340px;
+            min-width: 340px;
+            margin: 0.5em auto;
+            display: flex;
+            /* gap: 1em; */
+            justify-content: space-between;
+        }
+        label>input:not([type="checkbox"]) {
+            outline: none;
+            border: none;
+            border-radius: 4px;
+            padding: 6px;
+            box-shadow: 0 0 0 1.5px var(--text-color);
+        }
+    @supports(selector(:has(input))) {
+        label>input[type="checkbox"] {
+            opacity: 0.5;
+            width: 0;
+            height: 1px;
+        }
+        label:has(input:not([type="checkbox"])){
+            grid-column: 1 / -1;
+        }
+        label:has(input[type="checkbox"]:focus)::after, input:not([type="checkbox"]):focus {
+            box-shadow: 0 0 3px 2px var(--text-color) !important;
+        }
+        label:has(input[type="checkbox"]:checked)::after {
+            transition-duration: 200ms;
+            background-position: 0px;
+        }
+        label:has(input[type="checkbox"])::after {
+            content: "✓";
+            font-size: .9em;
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            line-height: 1.1;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+            background: linear-gradient(45deg,var(--text-color) 50%, transparent 50%);
+            background-size: 2.5em 1em;
+            background-position: -1.25em;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            box-shadow: 0 0 0 1.5px var(--text-color);
+            transition: background-position 30ms ease-in-out;
+        }
+    }
+    </style>
+</head>
+<body>
+    <form>
+        <label>Name&nbsp;<input type="text"></label>    
+        <label>Email&nbsp;<input type="email"></label>    
+        <label>Do you want animation?<input type="checkbox"></label>    
+        <label>Do you want to use Firefox?<input type="checkbox"></label>    
+        <label>Do you want a mellowpuff?<input type="checkbox"></label>    
+        <label>Do you want world peace?<input type="checkbox"></label>    
+    </form>
+</body>
+</html>

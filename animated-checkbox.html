@@ -49,6 +49,11 @@
             padding: 6px;
             box-shadow: 0 0 0 1.5px var(--text-color);
         }
+        @supports(-webkit-touch-callout: none){
+            label>input:not([type="checkbox"]) {
+            outline: var(--text-color);
+            }
+        }
     @supports(selector(:has(input))) {
         label>input[type="checkbox"] {
             opacity: 0.5;

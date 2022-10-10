@@ -43,15 +43,17 @@
             justify-content: space-between;
         }
         label>input:not([type="checkbox"]) {
+            -webkit-appearance: none;
             outline: none;
             border: none;
-            border-radius: 4px;
+            border-radius: 2px;
             padding: 6px;
             box-shadow: 0 0 0 1.5px var(--text-color);
         }
         @supports(-webkit-touch-callout: none){
             label>input:not([type="checkbox"]) {
             outline: var(--text-color);
+            color: purple;
             }
         }
     @supports(selector(:has(input))) {
@@ -79,7 +81,7 @@
             line-height: 1.1;
             text-align: center;
             font-weight: bold;
-            border-radius: 4px;
+            border-radius: 2px;
             background: linear-gradient(45deg,var(--text-color) 50%, transparent 50%);
             background-size: 2.5em 1em;
             background-position: -1.5em;
@@ -94,12 +96,34 @@
 </head>
 <body>
     <form>
-        <label>Name&nbsp;<input type="text"></label>    
+        <input type="range" id="lforate" min="0.125" max="4" value="1" step="0.125">
+        <input type="range" id="lfoshape" min="1" max="1000" value="500">
+        <progress id="phaseBar" max="127" value="64"></progress>
+        <label>Name&nbsp;<input id="tv" type="text"></label>    
         <label>Email&nbsp;<input type="email"></label>    
         <label>Do you want animation?<input type="checkbox"></label>    
         <label>Do you want to use Firefox?<input type="checkbox"></label>    
         <label>Do you want a mellowpuff?<input type="checkbox"></label>    
         <label>Do you want world peace?<input type="checkbox"></label>    
     </form>
+    <script>
+        let rate=1.75;// Hz
+        let phaser = 0.0;
+        let wwrap = function(v, th){
+            let thh = th/1000;
+            let reciprocal = 1 / thh;
+            let remainder = 1 - thh;
+            let remciprocal = 1 / remainder;
+            let r = ((v < th) ? v * reciprocal : 1000 - ((v - th)*remciprocal)); 
+            return r;
+        }
+
+        function tic(time){
+            phaser = wwrap((time*lforate.value)%1000, lfoshape.value);
+            phaseBar.value = phaser*0.128>>0;
+            requestAnimationFrame(tic);
+        }
+        tic();
+    </script>
 </body>
 </html>

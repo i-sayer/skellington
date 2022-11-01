@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient</title>
+    <style>
+        :root {
+            margin: 0;
+            --bar-height-a: 5;
+            --bar-height-b: 5;
+        }
+        body {
+            display: flex;
+        }
+        .gradient {
+            width: 50vw;
+            height: 100vh;
+        }
+        .a {
+            background: repeating-linear-gradient(black, black calc(var(--bar-height-a) * 1px), transparent  calc(var(--bar-height-a) * 1px), transparent calc( var(--bar-height-a) * 2px));
+        }
+        .b {
+            background: repeating-linear-gradient(black, black calc(var(--bar-height-b) * 1px), transparent  calc(var(--bar-height-b) * 1px), transparent calc( var(--bar-height-b) * 2px));
+        }
+    </style>
+</head>
+<body>
+    <div class="gradient a"></div>
+    <div class="gradient b"></div>
+    <script>
+        const root = document.querySelector(":root");
+        setInterval(u => {
+            let rva = Math.floor(Math.random()*320+4);
+            let rvb = Math.floor(Math.random()*320+4);
+            if ((rva&0x7)<4)
+            root.style.setProperty("--bar-height-a", rva>>4<<4);
+            if ((rvb&0x7)<3)
+            root.style.setProperty("--bar-height-b", rvb>>4<<4);
+        }, 250)
+    </script>
+</body>
+</html>

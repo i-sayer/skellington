@@ -10,6 +10,7 @@
                 Checkbox animation is positioned 2-3px too far right
                 Box shadow doesnt seem to work on input text element.
         */
+
         :root {
             --text-color: #222;
             font-family: Arial, Helvetica, sans-serif;
@@ -67,9 +68,10 @@
         }
     @supports(selector(:has(input))) {
         label>input[type="checkbox"] {
-            opacity: 0.5;
+            /* opacity: 0.5;
+            height: 1px; */
+            appearance: none;
             width: 0;
-            height: 1px;
         }
         label:has(input:not([type="checkbox"])){
             grid-column: 1 / -1;
@@ -100,6 +102,20 @@
             box-shadow: 0 0 0 1.5px var(--text-color);
             transition: background-position 30ms ease-in-out;
         }
+        .tb {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0 1em;
+        }
+        .tb > span {
+            flex-basis: clamp(20ch, 33%, 100%);
+            flex-grow: 1;
+        }
+        .tb > :last-child {
+            flex-basis: 0;
+            flex-grow: 999;
+            min-inline-size: 50%;
+        }
     }
     </style>
 </head>
@@ -108,8 +124,8 @@
         <input type="range" id="lforate" min="0.125" max="4" value="1" step="0.125">
         <input type="range" id="lfoshape" min="1" max="1024" value="512" step="8">
         <progress id="phaseBar" max="127" value="64"></progress>
-        <label>Name&nbsp;<input id="tv" type="text"></label>    
-        <label>Email&nbsp;<input type="email"></label>    
+        <label class="tb"><span>Name</span><input id="tv" type="text"></label>    
+        <label class="tb"><span>Email</span><input type="email"></label>    
         <label>Do you want animation?<input type="checkbox"></label>    
         <label>Do you want to use Firefox?<input type="checkbox"></label>    
         <label>Do you want a mellowpuff?<input type="checkbox"></label>    
@@ -133,6 +149,15 @@
             requestAnimationFrame(tic);
         }
         tic();
+        lforate.addEventListener("wheel", e => {
+            e.preventDefault();
+            //debugger;
+            let i = e.srcElement;
+            let sign = e.deltaY>0?-1:1;
+            let step = i.step*sign;
+            i.value -= step;
+            console.log(e);
+        })
     </script>
 </body>
 </html>

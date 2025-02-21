@@ -10,68 +10,20 @@
             --shl: 5%;
             --mhl: 12%;
             --hhl: 21%;
+            --clock-height: 500;
+            --stroke-color: orange;
         }
         html, body {
             height: 100vh;
             overflow-y: hidden;
+            background-color: black;
             margin: 0;
             padding: 0;
         }
         body {
             display: flex;
             flex-direction: column;
-            background-color: black;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .face {
-            width: 100vmin;
-            height: 0;
-            padding-bottom: 100vmin;
-            margin: auto;
-            box-sizing: border-box;
-            background-image: url(clock3.svg), url(images/connect-logo.svg);
-            background-size: cover, 25%;
-            background-position: 0 0, 50% 70%;
-            background-repeat: no-repeat;
-            background-color: aliceblue;
-            position: relative;
-            clip-path: circle(40%);
-            -webkit-clip-path: circle(50vmin);
-        }
-        .face::after {
-            content:"";
-            height:5vmin;
-            width:5vmin;
-            box-sizing: border-box;
-            position:absolute;
-            border-radius: 50%;
-            background-color: black;
-            left: calc(50% - 2.5vmin);
-            top: calc(50% - 2.5vmin);
-            box-shadow: 2px 4px 11px -3px rgba(0,0,0,0.5);
-        }
-        #hourhand,#minutehand,#secondhand {
-            position: absolute;
-            transform-origin: 50% 50%;
-            height: 100%;
-            transform: translateX(384px);
-            opacity: 0;
-            transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275), ease-in;
-            transition-duration: 0.125s, 2s;
-            transition-property: transform, opacity;
-        }
-        #hourhand {
-            background: linear-gradient(transparent var(--hhl), black var(--hhl),black 50%, transparent 50%);
-            width: 2vmin;
-        }
-        #minutehand {
-            background: linear-gradient(transparent var(--mhl), black var(--mhl),black 50%, transparent 50%);
-            width: 1vmin;
-        }
-        #secondhand {
-            background: linear-gradient(transparent var(--shl), rgba(255,0,0,0.2) var(--shl),red 50%, transparent 50%);
-            width: 0.5vmin;
-            min-width: 1px;
         }
         header {
             color:chartreuse;
@@ -119,44 +71,113 @@
                 display: none;
             }
         }
-
+/*****************************************/
+@property --hour-angle {
+    syntax: '<angle>';
+    inherits: true;
+    initial-value: 90deg;
+}
+@property --minute-angle {
+    syntax: '<angle>';
+    inherits: true;
+    initial-value: 180deg;
+}
+@property --sec-angle {
+    syntax: '<angle>';
+    inherits: true;
+    initial-value: 5deg;
+}
+.clock>svg {
+    height: calc(var(--clock-height) * 1px);
+    aspect-ratio: 1 / 1;
+    position: absolute;
+    --circ60th: calc(var(--clock-height) * 3.1415927 / 60);
+    stroke-dasharray: calc(var(--circ60th) * 0.2),calc(var(--circ60th) * 0.8);
+    stroke-dashoffset: calc(var(--circ60th) * .12);
+    stroke-width: 1.6%;
+    stroke:var(--stroke-color)
+}
+.clock {
+    height: calc(var(--clock-height) * 1px);
+    width: calc(var(--clock-height) * 1px);
+    margin: auto;
+    border-radius: 50%;
+    border: calc(var(--clock-height) * 0.01px) solid var(--stroke-color);
+    position: relative;
+    display: grid;
+    place-items: center;
+}
+.clock::after {
+    content:'';
+    height: 9px;
+    aspect-ratio: 1 / 1;
+    background-color: #ccc;
+    border: 1px solid;
+    box-shadow: 1px 1px 3px;
+    border-radius: 50%;
+    grid-area: 1 / 1;
+    z-index: 9;
+}
+.clock>b {
+    grid-area: 1 / 1;
+    font-size: calc(var(--clock-height) * 0.075px);
+    position: relative;
+    letter-spacing: -2px;
+    color: var(--stroke-color);
+    &::before {
+        content: '';
+        position: absolute;
+        display:block;
+        width: 0.25em;
+        height: 100%;
+        background-color: var(--stroke-color);
+        clip-path: inset(18% 0 46%);
+        top: 0;
+        left: calc(( 100% - 0.25em )/2);
+        transform: rotate(calc(var(--i) * (360/var(--hours, 12)) * 1deg)) translateY(-.66em) ;
+    }
+}
+.clock>b:hover {
+    cursor: pointer;
+    text-shadow: 0 0 5px rgb(255, 145, 0);
+}
+.clock>.hand {
+    height: 100%;
+    width: 2%;
+    background-color: yellow;
+    clip-path: polygon(0 55%, 100% 55%, 50% 7%);
+    rotate: var(--minute-angle);
+    grid-area: 1 / 1;
+    filter: blur(3px);
+}
+.clock>.hand.hour {
+    clip-path: polygon(0 55%, 100% 55%, 50% 18%);
+    width: 3%;
+    rotate: var(--hour-angle);
+}
+.clock>.hand.sec {
+    width: 1.5%;
+    background-color: pink;
+    rotate: var(--sec-angle);
+}
+.clock[style^='--time-start'] {
+    background-image: conic-gradient(from calc(var(--time-start)*0.083333turn),
+      #e8e8e8,#e3e3e3,#e8e8e8
+      calc(var(--duration)*0.083333turn),
+      transparent 0.001turn
+    );
+}
     </style>
 </head>
 <body>
     <header><span></span><span></span></header>
-    <div class="face">
-            <div id="hourhand"></div>
-            <div id="minutehand"></div>
-            <div id="secondhand"></div>
+    <div class="clock">
+        <svg id="TicMarks"><circle fill="none" cx="50%" cy="50%" r="50%"></circle></svg>
     </div>
     <footer><span>fr</span></footer>
-    <script>
-        window.setInterval(e => {
-            let dt = new Date();
-            let h=dt.getHours(), m=dt.getMinutes(), s=dt.getSeconds();
-            let par = hourhand.parentElement;
-            let half = Math.floor(par.offsetWidth/2);
-            let hands = [
-                {u:hourhand, a:(h+m*(1/60))*30, w:2},
-                {u:minutehand, a:(m+s*(1/60))*6, w:1 },
-                {u:secondhand, a:(s>0)?s*6:359.9, w:0.5}
-            ];
-            if (s==0)
-                window.setTimeout(f => {
-                    let u = hands[2];
-                    u.u.style.transitionDuration = "1ms";
-                    u.u.style.transform = `translateX( calc(${half}px - ${u.w/2}vmin)) rotate(0deg)`;
-                }, 500);
-
-            hands.forEach(u=>{
-                u.u.style.opacity = 1;
-                // u.u.style.transitionProperty = (s==0)?"none":"transform, opacity";
-                u.u.style.transitionDuration = "125ms";
-                u.u.style.transform = `translateX( calc(${half}px - ${u.w/2}vmin)) rotate(${u.a}deg)`;
-            });
-            if (m==0)
-                showDay(dt);
-        }, 1000);
+    <script type="module">
+        import {initClock} from './quartz-clock.js';
+        initClock()
         function showDay(dt){
             let dd = document.querySelectorAll("header>span, footer>span");
             let weekday = dt.toLocaleDateString('nz', {weekday:"long"});

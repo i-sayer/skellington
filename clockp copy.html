@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- This version is optimised for portrait mode tablet inside smoked glass cabinet. Hence no margin. -->
+    <title>CLock</title>
+    <style>
+        :root {
+            --shl: 5%;
+            --mhl: 12%;
+            --hhl: 21%;
+        }
+        html, body {
+            height: 100vh;
+            overflow-y: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            background-color: black;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .face {
+            width: 100vmin;
+            height: 0;
+            padding-bottom: 100vmin;
+            margin: auto;
+            box-sizing: border-box;
+            background-image: url(clock3.svg), url(images/connect-logo.svg);
+            background-size: cover, 25%;
+            background-position: 0 0, 50% 70%;
+            background-repeat: no-repeat;
+            background-color: aliceblue;
+            position: relative;
+            clip-path: circle(40%);
+            -webkit-clip-path: circle(50vmin);
+        }
+        .face::after {
+            content:"";
+            height:5vmin;
+            width:5vmin;
+            box-sizing: border-box;
+            position:absolute;
+            border-radius: 50%;
+            background-color: black;
+            left: calc(50% - 2.5vmin);
+            top: calc(50% - 2.5vmin);
+            box-shadow: 2px 4px 11px -3px rgba(0,0,0,0.5);
+        }
+        #hourhand,#minutehand,#secondhand {
+            position: absolute;
+            transform-origin: 50% 50%;
+            height: 100%;
+            transform: translateX(384px);
+            opacity: 0;
+            transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 1.275), ease-in;
+            transition-duration: 0.125s, 2s;
+            transition-property: transform, opacity;
+        }
+        #hourhand {
+            background: linear-gradient(transparent var(--hhl), black var(--hhl),black 50%, transparent 50%);
+            width: 2vmin;
+        }
+        #minutehand {
+            background: linear-gradient(transparent var(--mhl), black var(--mhl),black 50%, transparent 50%);
+            width: 1vmin;
+        }
+        #secondhand {
+            background: linear-gradient(transparent var(--shl), rgba(255,0,0,0.2) var(--shl),red 50%, transparent 50%);
+            width: 0.5vmin;
+            min-width: 1px;
+        }
+        header {
+            color:chartreuse;
+            font-size: 400%;
+            font-weight: 700;
+            text-align: center;
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            position: absolute;
+            width: 100vw;
+            z-index: 9;
+        }
+        header>span:first-child {
+            display: inline-flex;
+            flex-direction: column;
+            font-size:80%;
+            font-weight: 400;
+            padding: 0 6px;
+            color: black;
+            background-color: chartreuse;
+            line-height: 1;
+        }
+        header>span:first-child>span {
+            font-size: 120%;
+            font-weight: 700;
+            letter-spacing: -6px;
+        }
+        header>span>span>sup {
+            font-size: 50%;
+            font-weight: 900;
+            letter-spacing: 0;
+            margin-left: 3px;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            font-size: 400%;
+            color: #007fff;
+            text-align: center;
+            width: 100%;
+        }
+        @media (orientation: landscape){
+            footer {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <header><span></span><span></span></header>
+    <div class="face">
+            <div id="hourhand"></div>
+            <div id="minutehand"></div>
+            <div id="secondhand"></div>
+    </div>
+    <footer><span>fr</span></footer>
+    <script>
+        window.setInterval(e => {
+            let dt = new Date();
+            let h=dt.getHours(), m=dt.getMinutes(), s=dt.getSeconds();
+            let par = hourhand.parentElement;
+            let half = Math.floor(par.offsetWidth/2);
+            let hands = [
+                {u:hourhand, a:(h+m*(1/60))*30, w:2},
+                {u:minutehand, a:(m+s*(1/60))*6, w:1 },
+                {u:secondhand, a:(s>0)?s*6:359.9, w:0.5}
+            ];
+            if (s==0)
+                window.setTimeout(f => {
+                    let u = hands[2];
+                    u.u.style.transitionDuration = "1ms";
+                    u.u.style.transform = `translateX( calc(${half}px - ${u.w/2}vmin)) rotate(0deg)`;
+                }, 500);
+
+            hands.forEach(u=>{
+                u.u.style.opacity = 1;
+                // u.u.style.transitionProperty = (s==0)?"none":"transform, opacity";
+                u.u.style.transitionDuration = "125ms";
+                u.u.style.transform = `translateX( calc(${half}px - ${u.w/2}vmin)) rotate(${u.a}deg)`;
+            });
+            if (m==0)
+                showDay(dt);
+        }, 1000);
+        function showDay(dt){
+            let dd = document.querySelectorAll("header>span, footer>span");
+            let weekday = dt.toLocaleDateString('nz', {weekday:"long"});
+            let month   = dt.toLocaleDateString('nz', {month:"short"}).toUpperCase();
+            let date    = dt.getDate();
+            let ex = date<20?date:date%10;
+            dd[0].innerHTML = `${month} <span>${date}<sup>${{1:'st',2:'nd',3:'rd'}[ex]||'th'}</sup></span>`;
+            dd[1].textContent = weekday;
+            dd[2].textContent = dt.toLocaleDateString('fr', {weekday: 'long'});
+        }
+        showDay(new Date());
+    </script>
+</body>
+</html>

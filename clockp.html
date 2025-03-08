@@ -124,6 +124,7 @@
     position: relative;
     letter-spacing: -2px;
     color: var(--stroke-color);
+    /* for Roman transform: rotate(calc(var(--i) * (360/var(--hours, 12)) * 1deg)) translateY(-.26em) ; */
     &::before {
         content: '';
         position: absolute;
@@ -135,6 +136,7 @@
         top: 0;
         left: calc(( 100% - 0.25em )/2);
         transform: rotate(calc(var(--i) * (360/var(--hours, 12)) * 1deg)) translateY(-.66em) ;
+        /* transform: translateY(-0.44em); */
     }
 }
 .clock>b:hover {

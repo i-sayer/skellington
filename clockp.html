@@ -98,8 +98,8 @@
     stroke:var(--stroke-color)
 }
 .clock {
-    height: calc(var(--clock-height) * 1px);
-    width: calc(var(--clock-height) * 1px);
+    min-height: calc(var(--clock-height) * 1px);
+    min-width: calc(var(--clock-height) * 1px);
     margin: auto;
     border-radius: 50%;
     border: calc(var(--clock-height) * 0.01px) solid var(--stroke-color);
@@ -189,6 +189,9 @@
             dd[2].textContent = dt.toLocaleDateString('fr', {weekday: 'long'});
         }
         showDay(new Date());
+        let resizeId;
+        window.onresize = () => {clearTimeout(resizeId); resizeId = setTimeout(clockReload,80)};
+        let clockReload = () => document.location = document.location;
     </script>
 </body>
 </html>

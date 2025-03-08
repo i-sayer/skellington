@@ -11,8 +11,17 @@ export function initClock(options){
         console.log(duration, Minute);
         clock.style.setProperty("--time-start", (Minute+Second)/5);
         clock.style.setProperty("--duration", duration);
-}
+    }
+    let setClockHeight = function(){
+        let sz = Math.min(visualViewport.height,visualViewport.width) - 32;
+        clock.style.setProperty("--clock-height", sz);
+    }
     if (clock){
+        setClockHeight();
+        // remove any b or span in case this is a resize
+        clock.querySelectorAll('b,span').forEach(el=>{
+            clock.removeChild(el);
+        });
         let svgcircle = clock.querySelector("circle");
         let numHours = (getComputedStyle(svgcircle)).getPropertyValue("--hours")||12;
         let dd = Math.PI*2/numHours; // angle between digits 2PI/12

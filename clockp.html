@@ -23,7 +23,7 @@
         body {
             display: flex;
             flex-direction: column;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Century Gothic','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         header {
             color:chartreuse;
@@ -121,6 +121,7 @@
 .clock>b {
     grid-area: 1 / 1;
     font-size: calc(var(--clock-height) * 0.075px);
+    font-weight: 200;
     position: relative;
     letter-spacing: -2px;
     color: var(--stroke-color);
@@ -135,7 +136,7 @@
         clip-path: inset(18% 0 46%);
         top: 0;
         left: calc(( 100% - 0.25em )/2);
-        transform: rotate(calc(var(--i) * (360/var(--hours, 12)) * 1deg)) translateY(-.66em) ;
+        transform: rotate(calc(var(--i) * (360/var(--hours, 12)) * 1deg)) translateY(-.83em) ;
         /* transform: translateY(-0.44em); */
     }
 }

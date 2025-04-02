@@ -26,7 +26,7 @@ export function initClock(options){
         let numHours = (getComputedStyle(svgcircle)).getPropertyValue("--hours")||12;
         let dd = Math.PI*2/numHours; // angle between digits 2PI/12
         let ow = clock.offsetWidth;
-        let ra = ow / 2.11 - (ow / 18); // inner radius for digit position
+        let ra = ow / 2.11 - (ow / 15); // inner radius for digit position
         // set dash-array for tick marks because Firefox doesn't work with CSS and calc
         if (svgcircle) {
             let circ60th = ((getComputedStyle(svgcircle)).getPropertyValue("--clock-height") * 3.1415927) / (numHours*5);
@@ -70,7 +70,7 @@ export function initClock(options){
             let secondsHand = clock.querySelector(".sec");
             if (secondsHand&&secondsHand.animate){
                 // this uses the new JS animation API (if available) to create the tick 'overshoot' effect
-                secondsHand.animate([{rotate:"3deg"},{rotate:"-2deg"},{rotate:"1deg"},{rotate:"0deg"}],{duration:180,composite:"accumulate"});
+                secondsHand.animate([{rotate:"2deg"},{rotate:"-1deg"},{rotate:"0.5deg"},{rotate:"0deg"}],{duration:180,composite:"accumulate"});
             }
         }
         updateHands();

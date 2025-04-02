@@ -68,9 +68,9 @@ export function initClock(options){
             clock.style.setProperty("--minute-angle", `${360/60*m}deg`);
             clock.style.setProperty("--hour-angle", `${360/12*h}deg`);
             let secondsHand = clock.querySelector(".sec");
-            if (secondsHand&&secondsHand.animate){
+            if (secondsHand?.animate){
                 // this uses the new JS animation API (if available) to create the tick 'overshoot' effect
-                secondsHand.animate([{rotate:"2deg"},{rotate:"-1deg"},{rotate:"0.5deg"},{rotate:"0deg"}],{duration:180,composite:"accumulate"});
+                secondsHand.animate([{rotate:"2.2deg"},{rotate:"-1.5deg"},{rotate:"0.5deg"},{rotate:"0deg"}],{duration:180,composite:"accumulate"});
             }
         }
         updateHands();

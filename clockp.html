@@ -120,10 +120,10 @@
 }
 .clock>b {
     grid-area: 1 / 1;
-    font-size: calc(var(--clock-height) * 0.075px);
-    font-weight: 200;
+    font-size: calc(var(--clock-height) * 0.0975px);
+    font-weight: 400;
     position: relative;
-    letter-spacing: -2px;
+    letter-spacing: -0.1em;
     color: var(--stroke-color);
     /* for Roman transform: rotate(calc(var(--i) * (360/var(--hours, 12)) * 1deg)) translateY(-.26em) ; */
     &::before {
@@ -133,10 +133,10 @@
         width: 0.25em;
         height: 100%;
         background-color: var(--stroke-color);
-        clip-path: inset(18% 0 46%);
+        clip-path: inset(18% 0 58%);
         top: 0;
         left: calc(( 100% - 0.25em )/2);
-        transform: rotate(calc(var(--i) * (360/var(--hours, 12)) * 1deg)) translateY(-.83em) ;
+        transform: rotate(calc(var(--i) * (360/var(--hours, 12)) * 1deg)) translateY(-.55em) ;
         /* transform: translateY(-0.44em); */
     }
 }
